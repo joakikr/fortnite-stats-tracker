@@ -1,0 +1,6 @@
+# 3 party
+node_modules/
+
+# parcel
+.cache/
+dist/
