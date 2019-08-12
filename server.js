@@ -15,7 +15,7 @@ const throttleOptions = {
     rate: "1/3s"
 }
 
-// Secret TRN-Api-Key will must be provided as ENV variable
+// Secret TRN-Api-Key must be provided as ENV variable
 const ftOptions = {
     "headers": {
         'TRN-Api-Key': process.env.FT_KEY
@@ -27,16 +27,16 @@ app.get('/api/profile/:username', throttle(throttleOptions), function(req, res, 
     const path = API.profile(username);
 
     axios.get(path, ftOptions)
-        .then((data) => {
+        .then((response) => {
             // Throw 404 if player not found
-            if (data.data.error === 'Player Not Found') {
+            if (response.data.error === 'Player Not Found') {
                 res.status(404).json({
                     errorType: 'PLAYER_NOT_FOUND'
                 });
                 return;
             }
 
-            res.status(200).json({ profile: data.data });
+            res.status(200).json({ profile: response.data });
         })
         .catch((err) => {
             console.log("[ERROR: /api/profile", err);

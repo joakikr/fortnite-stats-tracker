@@ -1,14 +1,19 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 
+// Components
+import User from '../User/User';
+import Search from '../Search/Search';
+import Error from '../Error/Error';
+
 // Styling
-import './App.less'
+import './App.less';
 
 const ERROR_MSG = {
   PLAYER_NOT_FOUND: 'Fant ikke spiller med gitt brukernavn.',
   TOO_MANY_REQUESTS: 'For mange søk på en gang. Vent litt og prøv igjen.',
   GENERAL: 'Noe gikk galt. Prøv igjen senere.'
-}
+};
 
 const errorHandler = (status, setError) => {
   switch (status) {
@@ -18,10 +23,10 @@ const errorHandler = (status, setError) => {
     case 404:
       setError(ERROR_MSG.PLAYER_NOT_FOUND);
       break;
-    default: 
+    default:
       setError(ERROR_MSG.GENERAL);
   }
-}
+};
 
 const App = () => {
   const [user, setUser] = useState(null);
@@ -41,30 +46,14 @@ const App = () => {
       }
     }
 
-    fetchUser(username)
+    fetchUser(username);
   }
 
   return (
     <div>
-      <div>
-        <input type="text" placeholder="Brukernavn..." onChange={(event) => setUsername(event.target.value)} />
-        <button onClick={onClickHandler}>Søk på bruker</button>
-      </div>
-      {user && (
-        <div id="user">
-          <h1>{user.epicUserHandle}</h1>
-          <span>Platform: {user.platformNameLong}</span>
-          <span>Generelle stats:</span>
-          <ul>
-            {user.lifeTimeStats.map(stat => (
-              <li>
-                {stat.key} : {stat.value}
-              </li>
-            ))}
-          </ul>
-        </div>
-      )}
-      {error && <div id="error">{error}</div>}
+      <Search onChange={setUsername} onClick={onClickHandler} />
+      {user && <User user={user} />}
+      {error && <Error message={error} />}
     </div>
   );
 };
