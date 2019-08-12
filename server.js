@@ -5,17 +5,49 @@ const throttle = require('express-throttle');
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-app.get('/api/profile', throttle({ "burst": 1, "rate": "1/2s" }), function(req, res, next) {
-    axios.get('https://hn.algolia.com/api/v1/search?query=redux')
-        .then(function (data) {
-            res.status(200).json({ data: data.data });
-        });
+const API =  require('./src/server/api');
+
+// 3-party FortniteTracker has a limit of 1 request every 2 seconds
+// Hence, we need to throttle in order to not get banned :)
+const throttleOptions = {
+    key: () => 'fst',
+    burst: 1,
+    rate: "1/3s"
+}
+
+// Secret TRN-Api-Key will must be provided as ENV variable
+const ftOptions = {
+    "headers": {
+        'TRN-Api-Key': process.env.FT_KEY
+    }
+};
+
+app.get('/api/profile/:username', throttle(throttleOptions), function(req, res, next) {
+    const username = req.params.username;
+    const path = API.profile(username);
+
+    axios.get(path, ftOptions)
+        .then((data) => {
+            // Throw 404 if player not found
+            if (data.data.error === 'Player Not Found') {
+                res.status(404).json({
+                    errorType: 'PLAYER_NOT_FOUND'
+                });
+                return;
+            }
+
+            res.status(200).json({ profile: data.data });
+        })
+        .catch((err) => {
+            console.log("[ERROR: /api/profile", err);
+            res.status(500).json({ message: 'Something went wrong when fetching profile' })
+        })
 });
 
 // Let express use the bundler middleware, this will let Parcel handle every request over your express server
 if (process.env.NODE_ENV !== 'production') {
     const Bundler = require('parcel-bundler');
-    const file = 'src/index.html'; // Pass an absolute path to the entrypoint here
+    const file = 'src/client/index.html'; // Pass an absolute path to the entrypoint here
     const options = {
         logLevel: 4
     }; // See options section of api docs, for the possibilities
