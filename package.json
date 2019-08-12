@@ -12,8 +12,8 @@
   "scripts": {
     "clean": "rm dist/*",
     "build": "parcel build src/index.html",
-    "start": "env FST_ENV=development node server.js",
-    "start-prod": "env FST_ENV=production node server.js"
+    "start-dev": "env NODE_ENV=development node server.js",
+    "start": "env NODE_ENV=production node server.js"
   },
   "dependencies": {
     "axios": "^0.19.0",
