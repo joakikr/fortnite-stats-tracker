@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Container from '@material-ui/core/Container';
 import Box from '@material-ui/core/Box';
+import Typography from '@material-ui/core/Typography';
 
 // Components
 import UserCard from '../UserCard/UserCard';
@@ -37,8 +38,9 @@ const App = () => {
             />
             <Container maxWidth="md">
                 <Box>
-                    {user && <UserCard user={user} />}
+                    {!user && <Typography>Search by epic username to see stats.</Typography>}
                     {error && <Error message={error} />}
+                    {user && <UserCard user={user} />}
                 </Box>
                 <Box>
                     {profileUsernames.length > 0 && (
