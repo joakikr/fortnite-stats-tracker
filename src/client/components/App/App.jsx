@@ -1,5 +1,5 @@
 import React, { useState, Fragment } from 'react';
-import axios from 'axios';
+import { connect, useSelector } from 'react-redux'
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Container from '@material-ui/core/Container';
 import Box from '@material-ui/core/Box';
@@ -9,53 +9,20 @@ import UserCard from '../UserCard/UserCard';
 import Error from '../Error/Error';
 import SearchAppBar from '../SearcAppBar/SearchAppBar';
 
-// Styling
-import './App.less';
+// Redux
+import { fetchProfile } from '../../state/actions';
+import { getProfiles, getErrorMessage } from '../../state/selectors';
 
-const ERROR_MSG = {
-    PLAYER_NOT_FOUND: 'Fant ikke spiller med gitt brukernavn.',
-    TOO_MANY_REQUESTS: 'For mange søk på en gang. Vent litt og prøv igjen.',
-    GENERAL: 'Noe gikk galt. Prøv igjen senere.'
-};
-
-const errorHandler = (status, setError) => {
-    switch (status) {
-        case 429:
-            setError(ERROR_MSG.TOO_MANY_REQUESTS);
-            break;
-        case 404:
-            setError(ERROR_MSG.PLAYER_NOT_FOUND);
-            break;
-        default:
-            setError(ERROR_MSG.GENERAL);
-    }
-};
-
-const App = () => {
-    const [user, setUser] = useState(null);
-    const [error, setError] = useState(null);
+const App = ({ fetchProfile }) => {
     const [username, setUsername] = useState('');
-
-    function onClickHandler() {
-        async function fetchUser(username) {
-            try {
-                const path = `/api/profile/${username}`;
-                const result = await axios(path);
-                setUser(result.data.profile);
-                setError(null);
-            } catch (err) {
-                setUser(null);
-                errorHandler(err.response.status, setError);
-            }
-        }
-
-        fetchUser(username);
-    }
+    const error = useSelector(getErrorMessage);
+    const profiles = useSelector(getProfiles);
+    const user = profiles[username];
 
     return (
         <Fragment>
             <CssBaseline />
-            <SearchAppBar onChange={setUsername} onEnter={onClickHandler} />
+            <SearchAppBar onChange={setUsername} onEnter={() => fetchProfile(username)} />
             <Container maxWidth="lg">
                 <Box>
                     {user && <UserCard user={user} />}
@@ -66,4 +33,4 @@ const App = () => {
     );
 };
 
-export default App;
+export default connect(null, { fetchProfile })(App);
