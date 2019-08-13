@@ -1,2 +1,3 @@
 export const FST_FETCH_PROFILE = 'FST_FETCH_PROFILE';
 export const FST_SET_ERROR = 'FST_SET_ERROR';
+export const FST_SET_PROFILE = 'FST_SET_PROFILE';

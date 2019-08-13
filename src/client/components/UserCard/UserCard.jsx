@@ -17,19 +17,22 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import UserTable from './UserTable';
 
-function createRow(id, matches, kills, dubs, minutes) {
-    return { id, matches, kills, dubs, minutes: `${minutes}min` };
+function createRow(id, date, matches, kills, dubs, minutes) {
+    return { id, date: new Date(date).toLocaleDateString('no'), matches, kills, dubs, minutes: `${minutes}min` };
 }
 
 function createRows(matches) {
-    return matches.map(({ id, matches, kills, top1, minutesPlayed }) =>
-        createRow(id, matches, kills, top1, minutesPlayed)
+    return matches.map(({ id, dateCollected, matches, kills, top1, minutesPlayed }) =>
+        createRow(id, dateCollected, matches, kills, top1, minutesPlayed)
     );
 }
 
 const useStyles = makeStyles(theme => ({
     card: {
-        maxWidth: 400
+        maxWidth: 400,
+        [theme.breakpoints.up('md')]: {
+            maxWidth: '100%'
+        }
     },
     expand: {
         transform: 'rotate(0deg)',
@@ -44,8 +47,24 @@ const useStyles = makeStyles(theme => ({
     avatar: {
         backgroundColor: blue[500]
     },
+    actions: {
+        [theme.breakpoints.up('md')]: {
+            display: 'none'
+        }
+    },
     content: {
-        paddingBottom: 0
+        paddingBottom: 0,
+        [theme.breakpoints.up('md')]: {
+            display: 'flex',
+            justifyContent: 'space-evenly',
+            paddingBottom: theme.spacing(2)
+        }
+    },
+    contentTable: {
+        display: 'none',
+        [theme.breakpoints.up('md')]: {
+            display: 'block'
+        }
     },
     statsItem: {
         paddingTop: 0
@@ -78,25 +97,37 @@ const UserCard = ({ user }) => {
                 subheader={user.platformNameLong}
             />
             <CardContent className={classes.content}>
-                <Typography
-                    variant="subtitle1"
-                    color="textSecondary"
-                    component="h2"
-                >
-                    General stats
-                </Typography>
-                <List>
-                    {generalStats.map(({ key, value }, index) => (
-                        <ListItem
-                            className={classes.statsItem}
-                            key={`${user.epicUserHandle}-${index}`}
-                        >
-                            <ListItemText primary={key} secondary={value} />
-                        </ListItem>
-                    ))}
-                </List>
+                <div>
+                    <Typography
+                        variant="subtitle1"
+                        color="textSecondary"
+                        component="h2"
+                    >
+                        General stats
+                    </Typography>
+                    <List>
+                        {generalStats.map(({ key, value }, index) => (
+                            <ListItem
+                                className={classes.statsItem}
+                                key={`${user.epicUserHandle}-${index}`}
+                            >
+                                <ListItemText primary={key} secondary={value} />
+                            </ListItem>
+                        ))}
+                    </List>
+                </div>
+                <div className={classes.contentTable}>
+                    <Typography
+                        variant="subtitle1"
+                        color="textSecondary"
+                        component="h2"
+                    >
+                        Recent Matches
+                    </Typography>
+                    <UserTable rows={recentMatches} />
+                </div>
             </CardContent>
-            <CardActions disableSpacing>
+            <CardActions className={classes.actions} disableSpacing>
                 <Typography variant="subtitle2" component="span">
                     See recent matches...
                 </Typography>
@@ -111,7 +142,7 @@ const UserCard = ({ user }) => {
                     <ExpandMoreIcon />
                 </IconButton>
             </CardActions>
-            <Collapse in={expanded} timeout="auto" unmountOnExit>
+            <Collapse className={classes.actions} in={expanded} timeout="auto" unmountOnExit>
                 <CardContent>
                     <UserTable rows={recentMatches} />
                 </CardContent>

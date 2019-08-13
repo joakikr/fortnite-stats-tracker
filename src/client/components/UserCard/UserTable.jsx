@@ -10,7 +10,9 @@ import Paper from '@material-ui/core/Paper';
 const useStyles = makeStyles(theme => ({
     root: {
         width: '100%',
-        overflowX: 'auto'
+        overflowX: 'auto',
+        maxHeight: '300px',
+        overflowY: 'scroll'
     }
 }));
 
@@ -32,6 +34,7 @@ const UserTable = ({ rows }) => {
             <Table className={classes.table}>
                 <TableHead>
                     <TableRow>
+                        <StyledTableCell>Date</StyledTableCell>
                         <StyledTableCell>Matches</StyledTableCell>
                         <StyledTableCell>Kills</StyledTableCell>
                         <StyledTableCell>Dubs</StyledTableCell>
@@ -46,6 +49,9 @@ const UserTable = ({ rows }) => {
                                 component="th"
                                 scope="row"
                             >
+                                {row.date}
+                            </StyledTableCell>
+                            <StyledTableCell align="right">
                                 {row.matches}
                             </StyledTableCell>
                             <StyledTableCell align="right">

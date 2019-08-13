@@ -65,7 +65,7 @@ const onKeyDown = (e, onEnter) => {
     }
 };
 
-const SearchAppBar = ({ onChange, onEnter }) => {
+const SearchAppBar = ({ value, onChange, onEnter }) => {
     const classes = useStyles();
 
     return (
@@ -80,6 +80,7 @@ const SearchAppBar = ({ onChange, onEnter }) => {
                             <SearchIcon />
                         </div>
                         <InputBase
+                            value={value}
                             onChange={e => onChange(e.target.value)}
                             onKeyDown={event => onKeyDown(event, onEnter)}
                             placeholder="Search by user..."

@@ -6,6 +6,7 @@ const rejected = (actionType) => `${actionType}_REJECTED`;
 
 const initialState = {
     profiles: {},
+    active: '',
     error: null
 };
 
@@ -24,6 +25,11 @@ const reducer = (state = initialState, action) => {
             return {
                 ...state,
                 error: action.error
+            };
+        case AT.FST_SET_PROFILE:
+            return {
+                ...state,
+                active: action.profile
             };
         default:
             return state;
