@@ -16,14 +16,23 @@ import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import UserTable from './UserTable';
+import { GENERAL_STATS } from '../../consts';
 
 function createRow(id, date, matches, kills, dubs, minutes) {
-    return { id, date: new Date(date).toLocaleDateString('no'), matches, kills, dubs, minutes: `${minutes}min` };
+    return {
+        id,
+        date: new Date(date).toLocaleDateString('no'),
+        matches,
+        kills,
+        dubs,
+        minutes: `${minutes}min`
+    };
 }
 
 function createRows(matches) {
-    return matches.map(({ id, dateCollected, matches, kills, top1, minutesPlayed }) =>
-        createRow(id, dateCollected, matches, kills, top1, minutesPlayed)
+    return matches.map(
+        ({ id, dateCollected, matches, kills, top1, minutesPlayed }) =>
+            createRow(id, dateCollected, matches, kills, top1, minutesPlayed)
     );
 }
 
@@ -70,8 +79,6 @@ const useStyles = makeStyles(theme => ({
         paddingTop: 0
     }
 }));
-
-const GENERAL_STATS = ['Matches Played', 'Wins', 'Win%', 'Kills', 'K/d'];
 
 const UserCard = ({ user }) => {
     const classes = useStyles();
@@ -142,7 +149,12 @@ const UserCard = ({ user }) => {
                     <ExpandMoreIcon />
                 </IconButton>
             </CardActions>
-            <Collapse className={classes.actions} in={expanded} timeout="auto" unmountOnExit>
+            <Collapse
+                className={classes.actions}
+                in={expanded}
+                timeout="auto"
+                unmountOnExit
+            >
                 <CardContent>
                     <UserTable rows={recentMatches} />
                 </CardContent>

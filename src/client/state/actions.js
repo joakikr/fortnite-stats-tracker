@@ -28,6 +28,11 @@ export const setProfile = (profile) => ({
     profile
 })
 
+export const toggleToCompare = (profile) => ({
+    type: AT.FST_TOGGLE_TO_COMPARE,
+    profile
+})
+
 export const fetchProfile = (username) => dispatch => {
     const promise = axios(`/api/profile/${username}`);
 

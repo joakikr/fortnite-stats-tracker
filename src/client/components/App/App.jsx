@@ -10,20 +10,25 @@ import UserCard from '../UserCard/UserCard';
 import Error from '../Error/Error';
 import SearchAppBar from '../SearcAppBar/SearchAppBar';
 import RecentSearch from '../RecentSearch/RecentSearch';
+import CompareTable from '../CompareTable/CompareTable';
 
 // Redux
-import { fetchProfile, setProfile } from '../../state/actions';
+import { fetchProfile, setProfile, toggleToCompare } from '../../state/actions';
 import {
     getProfiles,
     getProfileUsernames,
     getErrorMessage,
-    getActiveProfile
+    getActiveProfile,
+    getProfilesToCompare,
+    getCompareRows
 } from '../../state/selectors';
 
 const App = () => {
     const dispatch = useDispatch();
     const profiles = useSelector(getProfiles);
     const profileUsernames = useSelector(getProfileUsernames);
+    const profileCompareRows = useSelector(getCompareRows);
+    const profilesToCompare = useSelector(getProfilesToCompare);
     const activeProfile = useSelector(getActiveProfile);
     const error = useSelector(getErrorMessage);
     const user = profiles[activeProfile];
@@ -38,14 +43,24 @@ const App = () => {
             />
             <Container maxWidth="md">
                 <Box>
+                    { profileCompareRows.length > 1 && (
+                        <Fragment>
+                            <Typography>Comparing { profileCompareRows.length } players</Typography>
+                            <CompareTable rows={profileCompareRows} />
+                        </Fragment>
+                    )}
+                </Box>
+                <Box>
                     {!user && <Typography>Search by epic username to see stats.</Typography>}
                     {error && <Error message={error} />}
-                    {user && <UserCard user={user} />}
+                    {user && profileCompareRows.length < 2 && <UserCard user={user} />}
                 </Box>
                 <Box>
                     {profileUsernames.length > 0 && (
                         <RecentSearch
+                            compare={profilesToCompare}
                             usernames={profileUsernames}
+                            toggleToCompare={username => dispatch(toggleToCompare(username))}
                             setProfile={username =>
                                 dispatch(setProfile(username))
                             }

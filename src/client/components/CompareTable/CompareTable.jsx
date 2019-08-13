@@ -13,7 +13,7 @@ const useStyles = makeStyles(theme => ({
         width: '100%',
         overflowX: 'auto',
         maxHeight: '300px',
-        overflowY: 'scroll'
+        overflowY: 'scroll',
     }
 }));
 
@@ -27,7 +27,7 @@ const StyledTableCell = withStyles(theme => ({
     }
 }))(TableCell);
 
-const UserTable = ({ rows }) => {
+const CompareTable = ({ rows }) => {
     const classes = useStyles();
 
     return (
@@ -35,34 +35,38 @@ const UserTable = ({ rows }) => {
             <Table className={classes.table}>
                 <TableHead>
                     <TableRow>
-                        <StyledTableCell>Date</StyledTableCell>
-                        <StyledTableCell>Matches</StyledTableCell>
-                        <StyledTableCell>Kills</StyledTableCell>
-                        <StyledTableCell>Dubs</StyledTableCell>
-                        <StyledTableCell>Time</StyledTableCell>
+                        <StyledTableCell align="right">Username</StyledTableCell>
+                        <StyledTableCell align="right">Matches</StyledTableCell>
+                        <StyledTableCell align="right">Win</StyledTableCell>
+                        <StyledTableCell align="right">Win %</StyledTableCell>
+                        <StyledTableCell align="right">Kills</StyledTableCell>
+                        <StyledTableCell align="right">K/d</StyledTableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>
                     {rows.map(row => (
-                        <TableRow key={row.id}>
+                        <TableRow key={row.username}>
                             <StyledTableCell
                                 align="right"
                                 component="th"
                                 scope="row"
                             >
-                                {row.date}
+                                {row.username}
                             </StyledTableCell>
                             <StyledTableCell align="right">
                                 {row.matches}
                             </StyledTableCell>
                             <StyledTableCell align="right">
+                                {row.wins}
+                            </StyledTableCell>
+                            <StyledTableCell align="right">
+                                {row.win_percentage}
+                            </StyledTableCell>
+                            <StyledTableCell align="right">
                                 {row.kills}
                             </StyledTableCell>
                             <StyledTableCell align="right">
-                                {row.dubs}
-                            </StyledTableCell>
-                            <StyledTableCell align="right">
-                                {row.minutes}
+                                {row.kd}
                             </StyledTableCell>
                         </TableRow>
                     ))}
@@ -72,4 +76,4 @@ const UserTable = ({ rows }) => {
     );
 };
 
-export default UserTable;
+export default CompareTable;

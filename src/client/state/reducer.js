@@ -6,9 +6,20 @@ const rejected = (actionType) => `${actionType}_REJECTED`;
 
 const initialState = {
     profiles: {},
+    compare: [],
     active: '',
     error: null
 };
+
+function toggle(collection, item) {
+    var idx = collection.indexOf(item);
+    if (idx !== -1) {
+        collection.splice(idx, 1);
+    } else {
+        collection.push(item);
+    }
+    return collection;
+}
 
 const reducer = (state = initialState, action) => {
     switch (action.type) {
@@ -30,6 +41,11 @@ const reducer = (state = initialState, action) => {
             return {
                 ...state,
                 active: action.profile
+            };
+        case AT.FST_TOGGLE_TO_COMPARE:
+            return {
+                ...state,
+                compare: toggle(state.compare, action.profile)
             };
         default:
             return state;

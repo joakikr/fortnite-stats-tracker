@@ -5,11 +5,15 @@ import Typography from '@material-ui/core/Typography';
 import InputBase from '@material-ui/core/InputBase';
 import { fade, makeStyles } from '@material-ui/core/styles';
 import SearchIcon from '@material-ui/icons/Search';
+import { deepPurple } from '@material-ui/core/colors';
 
 const useStyles = makeStyles(theme => ({
     root: {
         flexGrow: 1,
         marginBottom: '16px'
+    },
+    bar: {
+        backgroundColor: deepPurple[500]
     },
     title: {
         flexGrow: 1,
@@ -70,7 +74,7 @@ const SearchAppBar = ({ value, onChange, onEnter }) => {
 
     return (
         <div className={classes.root}>
-            <AppBar position="static">
+            <AppBar className={classes.bar} position="static">
                 <Toolbar>
                     <Typography className={classes.title} variant="h6" noWrap>
                         Fortnite Stats Tracker
