@@ -19,6 +19,45 @@ const useStyles = makeStyles(theme => ({
     }
 }));
 
+const grading = {
+    'matches': (val) => {
+        if (val < 1000) return 50;
+        else if (val < 4000) return 100;
+        else if (val < 8000) return 300;
+        else if (val < 15000) return 400;
+        else return 500;
+    },
+    'wins': (val) => {
+        if (val < 500) return 50;
+        else if (val < 1500) return 100;
+        else if (val < 3500) return 300;
+        else if (val < 7000) return 400;
+        else return 500;
+    },
+    'win_percentage': (val) => {
+        const withoutPercentage = parseFloat(val.split('%')[0]);
+        if (withoutPercentage < 5) return 50;
+        else if (withoutPercentage < 15) return 100;
+        else if (withoutPercentage < 30) return 300;
+        else if (withoutPercentage < 50) return 400;
+        else return 500;
+    },
+    'kills': (val) => {
+        if (val < 10000) return 50;
+        else if (val < 20000) return 100;
+        else if (val < 50000) return 300;
+        else if (val < 100000) return 400;
+        else return 500;
+    },
+    'kd': (val) => {
+        if (val < 1) return 50;
+        else if (val < 3) return 100;
+        else if (val < 6) return 300;
+        else if (val < 10) return 400;
+        else return 500;
+    },
+}
+
 const headRows = [
     { id: 'username', label: 'Username', isNumeric: false },
     { id: 'matches', label: 'Matches', isNumeric: true },
@@ -27,6 +66,16 @@ const headRows = [
     { id: 'kills', label: 'Kills', isNumeric: true },
     { id: 'kd', label: 'K/d', isNumeric: true }
 ];
+
+const getGrading = (id, value) => {
+    const grader = grading[id];
+
+    if (grader) {
+        return grader(value);
+    }
+    
+    return 50;
+}
 
 const CompareTable = ({ rows }) => {
     const classes = useStyles();
@@ -45,7 +94,7 @@ const CompareTable = ({ rows }) => {
 
     return (
         <Paper square className={classes.root}>
-            <Table className={classes.table}>
+            <Table>
                 <TableHead>
                     <TableRow>
                         {headRows.map(row => (
@@ -70,22 +119,22 @@ const CompareTable = ({ rows }) => {
                 <TableBody>
                     {sortStable(rows, getSorting(order, orderBy)).map(row => (
                         <TableRow key={row.username}>
-                            <StyledTableCell>
+                            <StyledTableCell grading={getGrading()}>
                                 {row.username}
                             </StyledTableCell>
-                            <StyledTableCell align="right">
+                            <StyledTableCell align="right" grading={getGrading('matches', row.matches)}>
                                 {row.matches}
                             </StyledTableCell>
-                            <StyledTableCell align="right">
+                            <StyledTableCell align="right" grading={getGrading('wins', row.wins)}>
                                 {row.wins}
                             </StyledTableCell>
-                            <StyledTableCell align="right">
+                            <StyledTableCell align="right" grading={getGrading('win_percentage', row.win_percentage)}>
                                 {row.win_percentage}
                             </StyledTableCell>
-                            <StyledTableCell align="right">
+                            <StyledTableCell align="right" grading={getGrading('kills', row.kills)}>
                                 {row.kills}
                             </StyledTableCell>
-                            <StyledTableCell align="right">
+                            <StyledTableCell align="right" grading={getGrading('kd', row.kd)}>
                                 {row.kd}
                             </StyledTableCell>
                         </TableRow>

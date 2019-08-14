@@ -13,7 +13,7 @@ const useStyles = makeStyles(theme => ({
         marginBottom: '16px'
     },
     bar: {
-        backgroundColor: deepPurple[500]
+        backgroundColor: deepPurple[600]
     },
     title: {
         flexGrow: 1,
