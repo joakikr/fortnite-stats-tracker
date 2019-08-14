@@ -1,12 +1,11 @@
 import React from 'react';
-import { withStyles, makeStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
-import { deepPurple } from '@material-ui/core/colors';
+import StyledTableCell from '../StyledTableCell/StyledTableCell';
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -17,17 +16,15 @@ const useStyles = makeStyles(theme => ({
     }
 }));
 
-const StyledTableCell = withStyles(theme => ({
-    head: {
-        backgroundColor: deepPurple[500],
-        color: theme.palette.common.white
-    },
-    body: {
-        fontSize: 14
-    }
-}))(TableCell);
+const headRows = [
+    { id: 'date', label: 'Date', isNumeric: false },
+    { id: 'matches', label: 'Matches', isNumeric: true },
+    { id: 'wins', label: 'Kills', isNumeric: true },
+    { id: 'win_percentage', label: 'Dubs', isNumeric: true },
+    { id: 'kills', label: 'Time', isNumeric: true }
+];
 
-const UserTable = ({ rows }) => {
+const RecentMatchesTable = ({ rows }) => {
     const classes = useStyles();
 
     return (
@@ -35,17 +32,20 @@ const UserTable = ({ rows }) => {
             <Table className={classes.table}>
                 <TableHead>
                     <TableRow>
-                        <StyledTableCell align="right">Date</StyledTableCell>
-                        <StyledTableCell align="right">Matches</StyledTableCell>
-                        <StyledTableCell align="right">Kills</StyledTableCell>
-                        <StyledTableCell align="right">Dubs</StyledTableCell>
-                        <StyledTableCell align="right">Time</StyledTableCell>
+                        {headRows.map(row => (
+                            <StyledTableCell
+                                key={row.id}
+                                align={row.isNumeric ? 'right' : 'left'}
+                            >
+                                {row.label}
+                            </StyledTableCell>
+                        ))}
                     </TableRow>
                 </TableHead>
                 <TableBody>
                     {rows.map(row => (
                         <TableRow key={row.id}>
-                            <StyledTableCell align="right">
+                            <StyledTableCell>
                                 {row.date}
                             </StyledTableCell>
                             <StyledTableCell align="right">
@@ -68,4 +68,4 @@ const UserTable = ({ rows }) => {
     );
 };
 
-export default UserTable;
+export default RecentMatchesTable;

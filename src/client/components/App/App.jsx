@@ -10,7 +10,7 @@ import UserCard from '../UserCard/UserCard';
 import Error from '../Error/Error';
 import SearchAppBar from '../SearcAppBar/SearchAppBar';
 import RecentSearch from '../RecentSearch/RecentSearch';
-import CompareTable from '../CompareTable/CompareTable';
+import CompareTable from '../Tables/CompareTable';
 
 // Redux
 import { fetchProfile, setProfile, setSearchValue, toggleToCompare } from '../../state/actions';

@@ -1,14 +1,13 @@
 import React from 'react';
-import { withStyles, makeStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import TableSortLabel from '@material-ui/core/TableSortLabel';
 import Paper from '@material-ui/core/Paper';
-import { deepPurple } from '@material-ui/core/colors';
 
+import StyledTableCell from '../StyledTableCell/StyledTableCell';
 import { sortStable, getSorting } from '../../utils';
 
 const useStyles = makeStyles(theme => ({
@@ -19,13 +18,6 @@ const useStyles = makeStyles(theme => ({
         overflowY: 'scroll'
     }
 }));
-
-const StyledTableCell = withStyles(theme => ({
-    head: {
-        backgroundColor: deepPurple[500],
-        color: theme.palette.common.white
-    }
-}))(TableCell);
 
 const headRows = [
     { id: 'username', label: 'Username', isNumeric: false },
@@ -78,7 +70,7 @@ const CompareTable = ({ rows }) => {
                 <TableBody>
                     {sortStable(rows, getSorting(order, orderBy)).map(row => (
                         <TableRow key={row.username}>
-                            <StyledTableCell align="right">
+                            <StyledTableCell>
                                 {row.username}
                             </StyledTableCell>
                             <StyledTableCell align="right">

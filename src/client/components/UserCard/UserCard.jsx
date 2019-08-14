@@ -15,7 +15,7 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
-import UserTable from './UserTable';
+import RecentMatchesTable from '../Tables/RecentMatchesTable';
 import { GENERAL_STATS } from '../../consts';
 
 function createRow(id, date, matches, kills, dubs, minutes) {
@@ -125,7 +125,7 @@ const UserCard = ({ user }) => {
                     >
                         Recent Matches
                     </Typography>
-                    <UserTable rows={recentMatches} />
+                    <RecentMatchesTable rows={recentMatches} />
                 </div>
             </CardContent>
             <CardActions className={classes.actions} disableSpacing>
@@ -150,7 +150,7 @@ const UserCard = ({ user }) => {
                 unmountOnExit
             >
                 <CardContent>
-                    <UserTable rows={recentMatches} />
+                    <RecentMatchesTable rows={recentMatches} />
                 </CardContent>
             </Collapse>
         </Card>
