@@ -57,6 +57,11 @@ const reducer = (state = initialState, action) => {
                 ...state,
                 compare: toggle(state.compare, action.profile)
             };
+        case AT.FST_CLEAR_COMPARE:
+            return {
+                ...state,
+                compare: []
+            };
         default:
             return state;
     }

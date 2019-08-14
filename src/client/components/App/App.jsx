@@ -13,7 +13,13 @@ import RecentSearch from '../RecentSearch/RecentSearch';
 import CompareTable from '../Tables/CompareTable';
 
 // Redux
-import { fetchProfile, setProfile, setSearchValue, toggleToCompare } from '../../state/actions';
+import {
+    fetchProfile,
+    setProfile,
+    setSearchValue,
+    toggleToCompare,
+    clearCompares
+} from '../../state/actions';
 import {
     getProfiles,
     getProfileUsernames,
@@ -50,7 +56,7 @@ const App = () => {
                             Search by epic username to see stats.
                         </Typography>
                     )}
-                    {profileCompareRows.length >= 2  && (
+                    {profileCompareRows.length >= 2 && (
                         <Fragment>
                             <Typography>
                                 Comparing {profileCompareRows.length} players
@@ -64,17 +70,18 @@ const App = () => {
                     {user && profileCompareRows.length < 2 && (
                         <UserCard user={user} />
                     )}
-                </Box>            
-                    {profileUsernames.length > 0 && (
-                        <RecentSearch
-                            compare={profilesToCompare}
-                            usernames={profileUsernames}
-                            toggleToCompare={username =>
-                                dispatch(toggleToCompare(username))
-                            }
-                            setProfile={username => dispatch(setProfile(username))}
-                        />
-                    )}
+                </Box>
+                {profileUsernames.length > 0 && (
+                    <RecentSearch
+                        compare={profilesToCompare}
+                        usernames={profileUsernames}
+                        toggleToCompare={username =>
+                            dispatch(toggleToCompare(username))
+                        }
+                        clearCompares={() => dispatch(clearCompares())}
+                        setProfile={username => dispatch(setProfile(username))}
+                    />
+                )}
                 <Box />
             </Container>
         </Fragment>
