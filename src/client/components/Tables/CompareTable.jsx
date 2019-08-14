@@ -119,7 +119,7 @@ const CompareTable = ({ rows }) => {
                 <TableBody>
                     {sortStable(rows, getSorting(order, orderBy)).map(row => (
                         <TableRow key={row.username}>
-                            <StyledTableCell grading={getGrading()}>
+                            <StyledTableCell>
                                 {row.username}
                             </StyledTableCell>
                             <StyledTableCell align="right" grading={getGrading('matches', row.matches)}>

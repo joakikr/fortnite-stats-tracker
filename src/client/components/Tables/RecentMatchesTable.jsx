@@ -29,7 +29,7 @@ const RecentMatchesTable = ({ rows }) => {
 
     return (
         <Paper square className={classes.root}>
-            <Table className={classes.table}>
+            <Table>
                 <TableHead>
                     <TableRow>
                         {headRows.map(row => (
@@ -43,25 +43,28 @@ const RecentMatchesTable = ({ rows }) => {
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    {rows.map(row => (
-                        <TableRow key={row.id}>
-                            <StyledTableCell>
-                                {row.date}
-                            </StyledTableCell>
-                            <StyledTableCell align="right">
-                                {row.matches}
-                            </StyledTableCell>
-                            <StyledTableCell align="right">
-                                {row.kills}
-                            </StyledTableCell>
-                            <StyledTableCell align="right">
-                                {row.dubs}
-                            </StyledTableCell>
-                            <StyledTableCell align="right">
-                                {row.minutes}
-                            </StyledTableCell>
-                        </TableRow>
-                    ))}
+                    {rows.map((row, index) => {
+                        const grading = index % 2 === 0 ? 50 : 0;
+                        return (
+                            <TableRow key={row.id}>
+                                <StyledTableCell grading={grading}>
+                                    {row.date}
+                                </StyledTableCell>
+                                <StyledTableCell grading={grading} align="right">
+                                    {row.matches}
+                                </StyledTableCell>
+                                <StyledTableCell grading={grading} align="right">
+                                    {row.kills}
+                                </StyledTableCell>
+                                <StyledTableCell grading={grading} align="right">
+                                    {row.dubs}
+                                </StyledTableCell>
+                                <StyledTableCell grading={grading} align="right">
+                                    {row.minutes}
+                                </StyledTableCell>
+                            </TableRow>
+                        );
+                    })}
                 </TableBody>
             </Table>
         </Paper>
