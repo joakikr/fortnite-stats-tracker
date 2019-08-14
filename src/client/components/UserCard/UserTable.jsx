@@ -31,25 +31,21 @@ const UserTable = ({ rows }) => {
     const classes = useStyles();
 
     return (
-        <Paper className={classes.root}>
+        <Paper square className={classes.root}>
             <Table className={classes.table}>
                 <TableHead>
                     <TableRow>
-                        <StyledTableCell>Date</StyledTableCell>
-                        <StyledTableCell>Matches</StyledTableCell>
-                        <StyledTableCell>Kills</StyledTableCell>
-                        <StyledTableCell>Dubs</StyledTableCell>
-                        <StyledTableCell>Time</StyledTableCell>
+                        <StyledTableCell align="right">Date</StyledTableCell>
+                        <StyledTableCell align="right">Matches</StyledTableCell>
+                        <StyledTableCell align="right">Kills</StyledTableCell>
+                        <StyledTableCell align="right">Dubs</StyledTableCell>
+                        <StyledTableCell align="right">Time</StyledTableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>
                     {rows.map(row => (
                         <TableRow key={row.id}>
-                            <StyledTableCell
-                                align="right"
-                                component="th"
-                                scope="row"
-                            >
+                            <StyledTableCell align="right">
                                 {row.date}
                             </StyledTableCell>
                             <StyledTableCell align="right">

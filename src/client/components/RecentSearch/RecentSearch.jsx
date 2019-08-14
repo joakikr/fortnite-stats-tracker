@@ -31,7 +31,7 @@ const RecentSearch = ({ usernames, compare, setProfile, toggleToCompare }) => {
     const classes = useStyles();
 
     return (
-        <Paper className={classes.root}>
+        <Paper square className={classes.root}>
             <Typography variant="subtitle1" component="h2">
                 Recently searched players (+ to compare)
             </Typography>

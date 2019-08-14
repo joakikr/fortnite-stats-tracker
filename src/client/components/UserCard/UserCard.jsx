@@ -37,12 +37,6 @@ function createRows(matches) {
 }
 
 const useStyles = makeStyles(theme => ({
-    card: {
-        maxWidth: 400,
-        [theme.breakpoints.up('sm')]: {
-            maxWidth: '100%'
-        }
-    },
     expand: {
         transform: 'rotate(0deg)',
         marginLeft: 'auto',
@@ -93,7 +87,7 @@ const UserCard = ({ user }) => {
     }
 
     return (
-        <Card className={classes.card}>
+        <Card square>
             <CardHeader
                 avatar={
                     <Avatar aria-label="profile" className={classes.avatar}>

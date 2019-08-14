@@ -13,7 +13,7 @@ const useStyles = makeStyles(theme => ({
         width: '100%',
         overflowX: 'auto',
         maxHeight: '300px',
-        overflowY: 'scroll',
+        overflowY: 'scroll'
     }
 }));
 
@@ -31,7 +31,7 @@ const CompareTable = ({ rows }) => {
     const classes = useStyles();
 
     return (
-        <Paper className={classes.root}>
+        <Paper square className={classes.root}>
             <Table className={classes.table}>
                 <TableHead>
                     <TableRow>
@@ -46,11 +46,7 @@ const CompareTable = ({ rows }) => {
                 <TableBody>
                     {rows.map(row => (
                         <TableRow key={row.username}>
-                            <StyledTableCell
-                                align="right"
-                                component="th"
-                                scope="row"
-                            >
+                            <StyledTableCell align="right">
                                 {row.username}
                             </StyledTableCell>
                             <StyledTableCell align="right">
