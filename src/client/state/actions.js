@@ -28,6 +28,11 @@ export const setProfile = (profile) => ({
     profile
 })
 
+export const setSearchValue = (value) => ({
+    type: AT.FST_SET_SEARCH_VALUE,
+    value
+})
+
 export const toggleToCompare = (profile) => ({
     type: AT.FST_TOGGLE_TO_COMPARE,
     profile

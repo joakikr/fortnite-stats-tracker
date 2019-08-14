@@ -13,12 +13,13 @@ import RecentSearch from '../RecentSearch/RecentSearch';
 import CompareTable from '../CompareTable/CompareTable';
 
 // Redux
-import { fetchProfile, setProfile, toggleToCompare } from '../../state/actions';
+import { fetchProfile, setProfile, setSearchValue, toggleToCompare } from '../../state/actions';
 import {
     getProfiles,
     getProfileUsernames,
     getErrorMessage,
     getActiveProfile,
+    getSearchValue,
     getProfilesToCompare,
     getCompareRows
 } from '../../state/selectors';
@@ -30,6 +31,7 @@ const App = () => {
     const profileCompareRows = useSelector(getCompareRows);
     const profilesToCompare = useSelector(getProfilesToCompare);
     const activeProfile = useSelector(getActiveProfile);
+    const searchValue = useSelector(getSearchValue);
     const error = useSelector(getErrorMessage);
     const user = profiles[activeProfile];
 
@@ -37,9 +39,9 @@ const App = () => {
         <Fragment>
             <CssBaseline />
             <SearchAppBar
-                value={activeProfile}
-                onChange={username => dispatch(setProfile(username))}
-                onEnter={() => dispatch(fetchProfile(activeProfile))}
+                value={searchValue}
+                onChange={username => dispatch(setSearchValue(username))}
+                onEnter={() => dispatch(fetchProfile(searchValue))}
             />
             <Container maxWidth="md">
                 <Box>
