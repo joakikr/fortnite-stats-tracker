@@ -2,9 +2,9 @@ import * as AT from './actionTypes';
 import axios from 'axios';
 
 const ERROR_MSG = {
-    PLAYER_NOT_FOUND: 'Fant ikke spiller med gitt brukernavn.',
-    TOO_MANY_REQUESTS: 'For mange søk på en gang. Vent litt og prøv igjen.',
-    GENERAL: 'Noe gikk galt. Prøv igjen senere.'
+    PLAYER_NOT_FOUND: 'Could not find user with given username.',
+    TOO_MANY_REQUESTS: 'Too many attempts. Hang on a few sec and try again.',
+    GENERAL: 'Something went wrong. Try again later.'
 };
 
 const errorHandler = (status) => {
