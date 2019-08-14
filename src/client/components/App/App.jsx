@@ -45,12 +45,12 @@ const App = () => {
             />
             <Container maxWidth="md">
                 <Box>
-                    {!user && (
+                    {!user && !error && profileCompareRows.length < 2 && (
                         <Typography>
                             Search by epic username to see stats.
                         </Typography>
                     )}
-                    {profileCompareRows.length > 0 && (
+                    {profileCompareRows.length >= 2  && (
                         <Fragment>
                             <Typography>
                                 Comparing {profileCompareRows.length} players
@@ -61,7 +61,7 @@ const App = () => {
                 </Box>
                 <Box>
                     {error && <Error message={error} />}
-                    {user && profileCompareRows.length === 0 && (
+                    {user && profileCompareRows.length < 2 && (
                         <UserCard user={user} />
                     )}
                 </Box>            

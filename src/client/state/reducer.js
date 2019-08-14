@@ -44,7 +44,8 @@ const reducer = (state = initialState, action) => {
         case AT.FST_SET_PROFILE:
             return {
                 ...state,
-                active: action.profile
+                active: action.profile,
+                error: null
             };
         case AT.FST_SET_SEARCH_VALUE:
             return {
