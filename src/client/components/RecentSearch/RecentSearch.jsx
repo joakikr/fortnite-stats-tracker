@@ -33,7 +33,7 @@ const RecentSearch = ({ usernames, compare, setProfile, toggleToCompare }) => {
     return (
         <Paper className={classes.root}>
             <Typography variant="subtitle1" component="h2">
-                Recently searched players
+                Recently searched players (+ to compare)
             </Typography>
             <div className={classes.list}>
                 {usernames.map(username => {

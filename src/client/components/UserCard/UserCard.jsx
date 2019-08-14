@@ -39,7 +39,7 @@ function createRows(matches) {
 const useStyles = makeStyles(theme => ({
     card: {
         maxWidth: 400,
-        [theme.breakpoints.up('md')]: {
+        [theme.breakpoints.up('sm')]: {
             maxWidth: '100%'
         }
     },

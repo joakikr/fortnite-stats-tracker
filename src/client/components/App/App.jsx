@@ -43,30 +43,37 @@ const App = () => {
             />
             <Container maxWidth="md">
                 <Box>
-                    { profileCompareRows.length > 1 && (
+                    {!user && (
+                        <Typography>
+                            Search by epic username to see stats.
+                        </Typography>
+                    )}
+                    {profileCompareRows.length > 0 && (
                         <Fragment>
-                            <Typography>Comparing { profileCompareRows.length } players</Typography>
+                            <Typography>
+                                Comparing {profileCompareRows.length} players
+                            </Typography>
                             <CompareTable rows={profileCompareRows} />
                         </Fragment>
                     )}
                 </Box>
                 <Box>
-                    {!user && <Typography>Search by epic username to see stats.</Typography>}
                     {error && <Error message={error} />}
-                    {user && profileCompareRows.length < 2 && <UserCard user={user} />}
-                </Box>
-                <Box>
+                    {user && profileCompareRows.length === 0 && (
+                        <UserCard user={user} />
+                    )}
+                </Box>            
                     {profileUsernames.length > 0 && (
                         <RecentSearch
                             compare={profilesToCompare}
                             usernames={profileUsernames}
-                            toggleToCompare={username => dispatch(toggleToCompare(username))}
-                            setProfile={username =>
-                                dispatch(setProfile(username))
+                            toggleToCompare={username =>
+                                dispatch(toggleToCompare(username))
                             }
+                            setProfile={username => dispatch(setProfile(username))}
                         />
                     )}
-                </Box>
+                <Box />
             </Container>
         </Fragment>
     );

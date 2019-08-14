@@ -38,7 +38,7 @@ const CompareTable = ({ rows }) => {
                         <StyledTableCell align="right">Username</StyledTableCell>
                         <StyledTableCell align="right">Matches</StyledTableCell>
                         <StyledTableCell align="right">Win</StyledTableCell>
-                        <StyledTableCell align="right">Win %</StyledTableCell>
+                        <StyledTableCell align="right">Win&nbsp;%</StyledTableCell>
                         <StyledTableCell align="right">Kills</StyledTableCell>
                         <StyledTableCell align="right">K/d</StyledTableCell>
                     </TableRow>
