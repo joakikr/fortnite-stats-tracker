@@ -5,8 +5,11 @@ import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
+import TableSortLabel from '@material-ui/core/TableSortLabel';
 import Paper from '@material-ui/core/Paper';
 import { deepPurple } from '@material-ui/core/colors';
+
+import { sortStable, getSorting } from '../../utils';
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -21,30 +24,59 @@ const StyledTableCell = withStyles(theme => ({
     head: {
         backgroundColor: deepPurple[500],
         color: theme.palette.common.white
-    },
-    body: {
-        fontSize: 14
     }
 }))(TableCell);
 
+const headRows = [
+    { id: 'username', label: 'Username', isNumeric: false },
+    { id: 'matches', label: 'Matches', isNumeric: true },
+    { id: 'wins', label: 'Wins', isNumeric: true },
+    { id: 'win_percentage', label: 'Win%', isNumeric: true },
+    { id: 'kills', label: 'Kills', isNumeric: true },
+    { id: 'kd', label: 'K/d', isNumeric: true }
+];
+
 const CompareTable = ({ rows }) => {
     const classes = useStyles();
+    const [order, setOrder] = React.useState('asc');
+    const [orderBy, setOrderBy] = React.useState('username');
+
+    const handleRequestSort = property => {
+        const isDesc = orderBy === property && order === 'desc';
+        setOrder(isDesc ? 'asc' : 'desc');
+        setOrderBy(property);
+    };
+
+    const createSortHandler = property => () => {
+        handleRequestSort(property);
+    };
 
     return (
         <Paper square className={classes.root}>
             <Table className={classes.table}>
                 <TableHead>
                     <TableRow>
-                        <StyledTableCell align="right">Username</StyledTableCell>
-                        <StyledTableCell align="right">Matches</StyledTableCell>
-                        <StyledTableCell align="right">Win</StyledTableCell>
-                        <StyledTableCell align="right">Win&nbsp;%</StyledTableCell>
-                        <StyledTableCell align="right">Kills</StyledTableCell>
-                        <StyledTableCell align="right">K/d</StyledTableCell>
+                        {headRows.map(row => (
+                            <StyledTableCell
+                                key={row.id}
+                                align={row.isNumeric ? 'right' : 'left'}
+                                sortDirection={
+                                    orderBy === row.id ? order : false
+                                }
+                            >
+                                <TableSortLabel
+                                    active={orderBy === row.id}
+                                    direction={order}
+                                    onClick={createSortHandler(row.id)}
+                                >
+                                    {row.label}
+                                </TableSortLabel>
+                            </StyledTableCell>
+                        ))}
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    {rows.map(row => (
+                    {sortStable(rows, getSorting(order, orderBy)).map(row => (
                         <TableRow key={row.username}>
                             <StyledTableCell align="right">
                                 {row.username}
