@@ -3,6 +3,8 @@ import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import InputBase from '@material-ui/core/InputBase';
+import Container from '@material-ui/core/Container';
+import Box from '@material-ui/core/Box';
 import { fade, makeStyles } from '@material-ui/core/styles';
 import SearchIcon from '@material-ui/icons/Search';
 import { deepPurple } from '@material-ui/core/colors';
@@ -73,31 +75,33 @@ const SearchAppBar = ({ value, onChange, onEnter }) => {
     const classes = useStyles();
 
     return (
-        <div className={classes.root}>
+        <Box className={classes.root}>
             <AppBar className={classes.bar} position="static">
-                <Toolbar>
-                    <Typography className={classes.title} variant="h6" noWrap>
-                        Fortnite Stats Tracker
-                    </Typography>
-                    <div className={classes.search}>
-                        <div className={classes.searchIcon}>
-                            <SearchIcon />
-                        </div>
-                        <InputBase
-                            value={value}
-                            onChange={e => onChange(e.target.value)}
-                            onKeyDown={event => onKeyDown(event, onEnter)}
-                            placeholder="Search by user..."
-                            classes={{
-                                root: classes.inputRoot,
-                                input: classes.inputInput
-                            }}
-                            inputProps={{ 'aria-label': 'search' }}
-                        />
-                    </div>
-                </Toolbar>
+                <Container maxWidth="md">
+                    <Toolbar disableGutters>
+                        <Typography className={classes.title} variant="h6" noWrap>
+                            Fortnite Stats Tracker
+                        </Typography>
+                        <Box className={classes.search}>
+                            <Box className={classes.searchIcon}>
+                                <SearchIcon />
+                            </Box>
+                            <InputBase
+                                value={value}
+                                onChange={e => onChange(e.target.value)}
+                                onKeyDown={event => onKeyDown(event, onEnter)}
+                                placeholder="Search by user..."
+                                classes={{
+                                    root: classes.inputRoot,
+                                    input: classes.inputInput
+                                }}
+                                inputProps={{ 'aria-label': 'search' }}
+                            />
+                        </Box>
+                    </Toolbar>
+                </Container>
             </AppBar>
-        </div>
+        </Box>
     );
 };
 
