@@ -7,20 +7,26 @@ const useStyles = makeStyles(theme => ({
     root: {
         borderBottom: '0'
     },
-    head: {
-        backgroundColor: deepPurple[600],
+    head: (props) => ({
+        backgroundColor: props.headColor[600],
         color: theme.palette.common.white
-    },
+    }),
     body: (props) => ({
-        backgroundColor: deepPurple[props.grading]
+        backgroundColor: props.bodyColor[props.grading]
     }),
 }));
 
 const StyledTableCell = (props) => {
-    const classes = useStyles(props);
+    const { bodyColor, headColor, grading, ...rest } = props
+    const classes = useStyles({ bodyColor, headColor, grading });
     return (
-        <TableCell {...props} classes={{ root: classes.root, head: classes.head, body: classes.body }}/>
+        <TableCell {...rest} classes={{ root: classes.root, head: classes.head, body: classes.body }}/>
     )
-}   
+}
+
+StyledTableCell.defaultProps = {
+    bodyColor: deepPurple,
+    headColor: deepPurple
+};
 
 export default StyledTableCell;
