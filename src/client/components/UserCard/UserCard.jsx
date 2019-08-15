@@ -59,6 +59,9 @@ function createTables(matches) {
 }
 
 const useStyles = makeStyles(theme => ({
+    card: {
+        marginBottom: theme.spacing(1)
+    },
     expand: {
         transform: 'rotate(0deg)',
         marginLeft: 'auto',
@@ -133,7 +136,7 @@ const UserCard = ({ user, onRefresh }) => {
     }
 
     return (
-        <Card square>
+        <Card className={classes.card} square>
             <CardHeader
                 avatar={<Avatar className={classes.avatar}>F</Avatar>}
                 action={

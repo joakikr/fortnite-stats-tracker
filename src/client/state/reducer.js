@@ -1,16 +1,17 @@
+import ls from 'local-storage';
 import * as AT from './actionTypes';
 
 const pending = (actionType) => `${actionType}_PENDING`;
 const fulfilled = (actionType) => `${actionType}_FULFILLED`;
 const rejected = (actionType) => `${actionType}_REJECTED`;
 
-const initialState = {
+export const initialState = () => ({
     profiles: {},
     compare: [],
     search: '',
     active: '',
     error: null
-};
+});
 
 function updateCompare(compare, profile) {
     var idx = compare.indexOf(profile);
@@ -25,10 +26,20 @@ function updateCompare(compare, profile) {
 function updateProfiles(profiles, profile, target) {
     delete profiles[target];
     profiles[profile.epicUserHandle] = profile;
+
+    // Update LocalStorage 
+    ls('fst-profiles', JSON.stringify(profiles));
+
     return profiles;
 }
 
-const reducer = (state = initialState, action) => {
+function clearProfiles() {
+    // Clear saved instances in LocalStorage 
+    ls.clear();
+    return initialState();
+}
+
+const reducer = (state = initialState(), action) => {
     switch (action.type) {
         case fulfilled(AT.FST_FETCH_PROFILE):
             return {
@@ -65,6 +76,8 @@ const reducer = (state = initialState, action) => {
                 ...state,
                 compare: []
             };
+        case AT.FST_CLEAR_RECENTLY_SEARCHED:
+            return clearProfiles();
         default:
             return state;
     }

@@ -18,7 +18,8 @@ import {
     setProfile,
     setSearchValue,
     toggleToCompare,
-    clearCompares
+    clearCompares,
+    clearRecentlySearched
 } from '../../state/actions';
 import {
     getProfiles,
@@ -49,6 +50,18 @@ const App = () => {
                 onChange={username => dispatch(setSearchValue(username))}
                 onEnter={() => dispatch(fetchProfile(searchValue))}
             />
+            {profileUsernames.length > 0 && (
+                <RecentSearch
+                    compare={profilesToCompare}
+                    usernames={profileUsernames}
+                    toggleToCompare={username =>
+                        dispatch(toggleToCompare(username))
+                    }
+                    clearCompares={() => dispatch(clearCompares())}
+                    clearRecentlySearched={() => dispatch(clearRecentlySearched())}
+                    setProfile={username => dispatch(setProfile(username))}
+                />
+            )}
             <Container maxWidth="md">
                 <Box>
                     {error && <Error message={error} />}
@@ -71,18 +84,6 @@ const App = () => {
                         <UserCard user={user} onRefresh={(username) => dispatch(fetchProfile(username))} />
                     )}
                 </Box>
-                {profileUsernames.length > 0 && (
-                    <RecentSearch
-                        compare={profilesToCompare}
-                        usernames={profileUsernames}
-                        toggleToCompare={username =>
-                            dispatch(toggleToCompare(username))
-                        }
-                        clearCompares={() => dispatch(clearCompares())}
-                        setProfile={username => dispatch(setProfile(username))}
-                    />
-                )}
-                <Box />
             </Container>
         </Fragment>
     );

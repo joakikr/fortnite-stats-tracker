@@ -4,9 +4,13 @@ import Chip from '@material-ui/core/Chip';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import Add from '@material-ui/icons/Add';
-import Button from '@material-ui/core/Button';
+import Tooltip from '@material-ui/core/Tooltip';
 import Box from '@material-ui/core/Box';
+import Container from '@material-ui/core/Container';
+import IconButton from '@material-ui/core/IconButton';
 import Remove from '@material-ui/icons/Remove';
+import DeleteIcon from '@material-ui/icons/Delete';
+import ClearAllIcon from '@material-ui/icons/ClearAll';
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -15,8 +19,8 @@ const useStyles = makeStyles(theme => ({
         flexDirection: 'column',
         flexWrap: 'wrap',
         padding: theme.spacing(2),
-        marginTop: theme.spacing(2),
-        marginBottom: theme.spacing(1)
+        marginTop: -theme.spacing(2),
+        marginBottom: theme.spacing(2)
     },
     header: {
         display: 'flex',
@@ -42,49 +46,68 @@ const RecentSearch = ({
     compare,
     setProfile,
     toggleToCompare,
-    clearCompares
+    clearCompares,
+    clearRecentlySearched
 }) => {
     const classes = useStyles();
     return (
         <Paper square className={classes.root}>
-            <Box className={classes.header}>
-                <Typography variant="subtitle1" component="h2">
-                    Recently searched players{' '}
-                    <Typography variant="subtitle2" component="span">
-                        (+ to compare)
+            <Container  maxWidth="md">
+                <Box className={classes.header}>
+                    <Typography variant="subtitle1" component="h2">
+                        Recently searched players{' '}
+                        <Typography variant="subtitle2" component="span">
+                            (+&nbsp;to&nbsp;compare)
+                        </Typography>
                     </Typography>
-                </Typography>
-                <Button
-                    color="secondary"
-                    className={classes.button}
-                    onClick={clearCompares}
-                >
-                    Clear compares
-                </Button>
-            </Box>
-            <Box className={classes.list}>
-                {usernames.map(username => {
-                    let icon = ( <Add /> );
-                    let color = 'primary';
+                    <Box className={classes.button}>
+                        <Tooltip
+                            
+                            title="Clear all recently searched"
+                        >
+                            <IconButton
+                                className={classes.button}
+                                aria-label="clear all recently searched"
+                                onClick={clearRecentlySearched}
+                            >
+                                <DeleteIcon />
+                            </IconButton>
+                        </Tooltip>
+                        <Tooltip title="Clear all in compare table">
+                            <IconButton
+                                className={classes.button}
+                                aria-label="clear all in compare table"
+                                onClick={clearCompares}
+                            >
+                                <ClearAllIcon />
+                            </IconButton>
+                        </Tooltip>
+                    </Box>
+                </Box>
+                <Box className={classes.list}>
+                    {usernames.map(username => {
+                        let icon = <Add />;
+                        let color = 'primary';
 
-                    if (compare.includes(username)) {
-                        icon = ( <Remove /> );
-                        color = 'secondary';
-                    }
-                    return (
-                        <Chip
-                            className={classes.chip}
-                            key={username}
-                            label={username}
-                            variant="outlined"
-                            color={color}
-                            deleteIcon={icon}
-                            onDelete={() => toggleToCompare(username)}
-                            onClick={() => setProfile(username)}
-                        />
-                    );
-                })}
-            </Box>
+                        if (compare.includes(username)) {
+                            icon = <Remove />;
+                            color = 'secondary';
+                        }
+                        return (
+                            <Chip
+                                className={classes.chip}
+                                key={username}
+                                label={username}
+                                variant="outlined"
+                                color={color}
+                                deleteIcon={icon}
+                                onDelete={() => toggleToCompare(username)}
+                                onClick={() => setProfile(username)}
+                            />
+                        );
+                    })}
+                </Box>
+            </Container>
         </Paper>
     );
 };

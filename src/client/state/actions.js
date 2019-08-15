@@ -42,6 +42,10 @@ export const clearCompares = () => ({
     type: AT.FST_CLEAR_COMPARE
 });
 
+export const clearRecentlySearched = () => ({
+    type: AT.FST_CLEAR_RECENTLY_SEARCHED
+});
+
 export const fetchProfile = (username) => dispatch => {
     const promise = axios(`/api/profile/${username}`);
 
