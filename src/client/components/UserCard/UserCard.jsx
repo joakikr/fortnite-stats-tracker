@@ -11,31 +11,51 @@ import Collapse from '@material-ui/core/Collapse';
 import Avatar from '@material-ui/core/Avatar';
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
-import { blue } from '@material-ui/core/colors';
+import { blue, deepPurple } from '@material-ui/core/colors';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import RecentMatchesTable from '../Tables/RecentMatchesTable';
-import { GENERAL_STATS } from '../../consts';
+import { GENERAL_STATS, PLAYLIST } from '../../consts';
 import RefreshIcon from '@material-ui/icons/Refresh';
 
-function createRow(id, date, matches, kills, dubs, minutes) {
+function createRow(id, matches, kills, wins, minutes, playlistId) {
     return {
         id,
-        date: new Date(date).toLocaleDateString('no'),
+        type: PLAYLIST[playlistId],
         matches,
         kills,
-        dubs,
+        wins,
         minutes: `${minutes}min`
     };
 }
 
 function createRows(matches) {
     return matches.map(
-        ({ id, dateCollected, matches, kills, top1, minutesPlayed }) =>
-            createRow(id, dateCollected, matches, kills, top1, minutesPlayed)
+        ({ id, matches, kills, top1, minutesPlayed, playlistId }) =>
+            createRow(id, matches, kills, top1, minutesPlayed, playlistId)
     );
+}
+
+function createTables(matches) {
+    const rawGroups = {};
+    const groups = {};
+
+    matches.forEach(match => {
+        let date = match.dateCollected.split('T')[0];
+        if (date in rawGroups) {
+            rawGroups[date].push(match);
+        } else {
+            rawGroups[date] = [match];
+        }
+    });
+
+    Object.keys(rawGroups).forEach(key => {
+        groups[key] = createRows(rawGroups[key]);
+    });
+
+    return groups;
 }
 
 const useStyles = makeStyles(theme => ({
@@ -73,15 +93,39 @@ const useStyles = makeStyles(theme => ({
     },
     statsItem: {
         paddingTop: 0
+    },
+    scroll: {
+        overflowX: 'auto',
+        maxHeight: '300px',
+        overflowY: 'scroll',
+        border: `1px solid ${deepPurple[600]}`,
+        [theme.breakpoints.up('md')]: {
+            minWidth: '550px'
+        }
     }
 }));
+
+const RecentMatchesTables = ({ tables }) => {
+    const classes = useStyles();
+    return (
+        <Box className={classes.scroll}>
+            {Object.entries(tables).map(([date, rows]) => (
+                <RecentMatchesTable
+                    key={`recent-matches-table-${date}`}
+                    date={date}
+                    rows={rows}
+                />
+            ))}
+        </Box>
+    );
+};
 
 const UserCard = ({ user, onRefresh }) => {
     const classes = useStyles();
     const generalStats = user.lifeTimeStats.filter(stat =>
         GENERAL_STATS.includes(stat.key)
     );
-    const recentMatches = createRows(user.recentMatches);
+    const recentMatchesTables = createTables(user.recentMatches);
     const [expanded, setExpanded] = useState(false);
 
     function handleExpandClick() {
@@ -91,16 +135,15 @@ const UserCard = ({ user, onRefresh }) => {
     return (
         <Card square>
             <CardHeader
-                avatar={
-                    <Avatar className={classes.avatar}>
-                        F
-                    </Avatar>
-                }
+                avatar={<Avatar className={classes.avatar}>F</Avatar>}
                 action={
-                    <IconButton onClick={() => onRefresh(user.epicUserHandle)} aria-label="refresh">
-                      <RefreshIcon />
+                    <IconButton
+                        onClick={() => onRefresh(user.epicUserHandle)}
+                        aria-label="refresh"
+                    >
+                        <RefreshIcon />
                     </IconButton>
-                  }
+                }
                 title={user.epicUserHandle}
                 subheader={user.platformNameLong}
             />
@@ -132,34 +175,32 @@ const UserCard = ({ user, onRefresh }) => {
                     >
                         Recent Matches
                     </Typography>
-                    <RecentMatchesTable rows={recentMatches} />
+                    <RecentMatchesTables tables={recentMatchesTables} />
                 </Box>
-            </CardContent>
-            <CardActions className={classes.actions} disableSpacing>
-                <Typography variant="subtitle2" component="span">
-                    See recent matches...
-                </Typography>
-                <IconButton
-                    className={clsx(classes.expand, {
-                        [classes.expandOpen]: expanded
-                    })}
-                    onClick={handleExpandClick}
-                    aria-expanded={expanded}
-                    aria-label="show more"
+                <CardActions className={classes.actions} disableSpacing>
+                    <Typography variant="subtitle2" component="span">
+                        See recent matches...
+                    </Typography>
+                    <IconButton
+                        className={clsx(classes.expand, {
+                            [classes.expandOpen]: expanded
+                        })}
+                        onClick={handleExpandClick}
+                        aria-expanded={expanded}
+                        aria-label="show more"
+                    >
+                        <ExpandMoreIcon />
+                    </IconButton>
+                </CardActions>
+                <Collapse
+                    className={classes.actions}
+                    in={expanded}
+                    timeout="auto"
+                    unmountOnExit
                 >
-                    <ExpandMoreIcon />
-                </IconButton>
-            </CardActions>
-            <Collapse
-                className={classes.actions}
-                in={expanded}
-                timeout="auto"
-                unmountOnExit
-            >
-                <CardContent>
-                    <RecentMatchesTable rows={recentMatches} />
-                </CardContent>
-            </Collapse>
+                    <RecentMatchesTables tables={recentMatchesTables} />
+                </Collapse>
+            </CardContent>
         </Card>
     );
 };

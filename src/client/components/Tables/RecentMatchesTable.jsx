@@ -9,22 +9,19 @@ import StyledTableCell from '../StyledTableCell/StyledTableCell';
 
 const useStyles = makeStyles(theme => ({
     root: {
-        width: '100%',
-        overflowX: 'auto',
-        maxHeight: '300px',
-        overflowY: 'scroll'
+        width: '100%'
     }
 }));
 
-const headRows = [
-    { id: 'date', label: 'Date', isNumeric: false },
+const headRows = (date) => [
+    { id: 'date', label: new Date(date).toLocaleDateString('no'), isNumeric: false },
     { id: 'matches', label: 'Matches', isNumeric: true },
-    { id: 'wins', label: 'Kills', isNumeric: true },
-    { id: 'win_percentage', label: 'Dubs', isNumeric: true },
-    { id: 'kills', label: 'Time', isNumeric: true }
+    { id: 'kills', label: 'Kills', isNumeric: true },
+    { id: 'wins', label: 'Wins', isNumeric: true },
+    { id: 'time', label: 'Time', isNumeric: true }
 ];
 
-const RecentMatchesTable = ({ rows }) => {
+const RecentMatchesTable = ({ date, rows }) => {
     const classes = useStyles();
 
     return (
@@ -32,7 +29,7 @@ const RecentMatchesTable = ({ rows }) => {
             <Table>
                 <TableHead>
                     <TableRow>
-                        {headRows.map(row => (
+                        {headRows(date).map(row => (
                             <StyledTableCell
                                 key={row.id}
                                 align={row.isNumeric ? 'right' : 'left'}
@@ -48,7 +45,7 @@ const RecentMatchesTable = ({ rows }) => {
                         return (
                             <TableRow key={row.id}>
                                 <StyledTableCell grading={grading}>
-                                    {row.date}
+                                    {row.type}
                                 </StyledTableCell>
                                 <StyledTableCell grading={grading} align="right">
                                     {row.matches}
@@ -57,7 +54,7 @@ const RecentMatchesTable = ({ rows }) => {
                                     {row.kills}
                                 </StyledTableCell>
                                 <StyledTableCell grading={grading} align="right">
-                                    {row.dubs}
+                                    {row.wins}
                                 </StyledTableCell>
                                 <StyledTableCell grading={grading} align="right">
                                     {row.minutes}
