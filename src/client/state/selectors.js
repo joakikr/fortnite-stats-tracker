@@ -1,7 +1,7 @@
 import { GENERAL_STATS } from '../consts';
 
 export const getProfiles = (state) => state.profiles || {};
-export const getProfileUsernames = (state) => Object.keys(getProfiles(state));
+export const getProfileUsernames = (state) => Object.values(getProfiles(state)).map((profile) => profile.epicUserHandle);
 export const getErrorMessage = (state) => state.error || null;
 export const getActiveProfile = (state) => state.active || '';
 export const getSearchValue = (state) => state.search || '';

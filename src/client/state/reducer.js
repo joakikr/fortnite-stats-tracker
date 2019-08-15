@@ -12,14 +12,20 @@ const initialState = {
     error: null
 };
 
-function toggle(collection, item) {
-    var idx = collection.indexOf(item);
+function updateCompare(compare, profile) {
+    var idx = compare.indexOf(profile);
     if (idx !== -1) {
-        collection.splice(idx, 1);
+        compare.splice(idx, 1);
     } else {
-        collection.push(item);
+        compare.push(profile);
     }
-    return collection;
+    return compare;
+}
+
+function updateProfiles(profiles, profile, target) {
+    delete profiles[target];
+    profiles[profile.epicUserHandle] = profile;
+    return profiles;
 }
 
 const reducer = (state = initialState, action) => {
@@ -27,11 +33,8 @@ const reducer = (state = initialState, action) => {
         case fulfilled(AT.FST_FETCH_PROFILE):
             return {
                 ...state,
-                profiles: {
-                    ...state.profiles,
-                    [action.meta.username]: action.payload.data.profile
-                },
-                active: action.meta.username,
+                profiles: updateProfiles(state.profiles, action.payload.data.profile, action.meta.username),
+                active: action.payload.data.profile.epicUserHandle,
                 search: '',
                 error: null
             };
@@ -55,7 +58,7 @@ const reducer = (state = initialState, action) => {
         case AT.FST_TOGGLE_TO_COMPARE:
             return {
                 ...state,
-                compare: toggle(state.compare, action.profile)
+                compare: updateCompare(state.compare, action.profile)
             };
         case AT.FST_CLEAR_COMPARE:
             return {
