@@ -57,7 +57,7 @@ const App = () => {
                             Search by epic username to see stats.
                         </Typography>
                     )}
-                    {profileCompareRows.length >= 2 && (
+                    {profileCompareRows.length > 0 && (
                         <Fragment>
                             <Typography>
                                 Comparing {profileCompareRows.length} players
@@ -67,7 +67,7 @@ const App = () => {
                     )}
                 </Box>
                 <Box>
-                    {user && profileCompareRows.length < 2 && (
+                    {user && (
                         <UserCard user={user} onRefresh={(username) => dispatch(fetchProfile(username))} />
                     )}
                 </Box>
