@@ -28,7 +28,7 @@ const useStyles = makeStyles(theme => ({
     },
     list: {
         display: 'flex',
-        justifyContent: 'center',
+        justifyContent: 'flex-start',
         flexWrap: 'wrap',
         padding: theme.spacing(0.5)
     },
