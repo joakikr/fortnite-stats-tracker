@@ -6,6 +6,7 @@ export const PLAYLIST = {
     32: 'Solo',
     33: 'Squad',
     97: 'Creative',
+    107: 'Arena Solo',
     109: 'Arena Trios',
     161: 'Team Rumble'
 }
