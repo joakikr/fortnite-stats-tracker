@@ -64,18 +64,20 @@ const RecentSearch = ({
             </Box>
             <Box className={classes.list}>
                 {usernames.map(username => {
-                    const icon = compare.includes(username) ? (
-                        <Remove />
-                    ) : (
-                        <Add />
-                    );
+                    let icon = ( <Add /> );
+                    let color = 'primary';
+
+                    if (compare.includes(username)) {
+                        icon = ( <Remove /> );
+                        color = 'secondary';
+                    }
                     return (
                         <Chip
                             className={classes.chip}
                             key={username}
                             label={username}
                             variant="outlined"
-                            color="primary"
+                            color={color}
                             deleteIcon={icon}
                             onDelete={() => toggleToCompare(username)}
                             onClick={() => setProfile(username)}
