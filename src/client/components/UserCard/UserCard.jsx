@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
+import Box from '@material-ui/core/Box';
 import Card from '@material-ui/core/Card';
 import CardHeader from '@material-ui/core/CardHeader';
 import CardContent from '@material-ui/core/CardContent';
@@ -17,6 +18,7 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import RecentMatchesTable from '../Tables/RecentMatchesTable';
 import { GENERAL_STATS } from '../../consts';
+import RefreshIcon from '@material-ui/icons/Refresh';
 
 function createRow(id, date, matches, kills, dubs, minutes) {
     return {
@@ -74,7 +76,7 @@ const useStyles = makeStyles(theme => ({
     }
 }));
 
-const UserCard = ({ user }) => {
+const UserCard = ({ user, onRefresh }) => {
     const classes = useStyles();
     const generalStats = user.lifeTimeStats.filter(stat =>
         GENERAL_STATS.includes(stat.key)
@@ -90,15 +92,20 @@ const UserCard = ({ user }) => {
         <Card square>
             <CardHeader
                 avatar={
-                    <Avatar aria-label="profile" className={classes.avatar}>
+                    <Avatar className={classes.avatar}>
                         F
                     </Avatar>
                 }
+                action={
+                    <IconButton onClick={() => onRefresh(user.epicUserHandle)} aria-label="refresh">
+                      <RefreshIcon />
+                    </IconButton>
+                  }
                 title={user.epicUserHandle}
                 subheader={user.platformNameLong}
             />
             <CardContent className={classes.content}>
-                <div>
+                <Box>
                     <Typography
                         variant="subtitle1"
                         color="textSecondary"
@@ -116,8 +123,8 @@ const UserCard = ({ user }) => {
                             </ListItem>
                         ))}
                     </List>
-                </div>
-                <div className={classes.contentTable}>
+                </Box>
+                <Box className={classes.contentTable}>
                     <Typography
                         variant="subtitle1"
                         color="textSecondary"
@@ -126,7 +133,7 @@ const UserCard = ({ user }) => {
                         Recent Matches
                     </Typography>
                     <RecentMatchesTable rows={recentMatches} />
-                </div>
+                </Box>
             </CardContent>
             <CardActions className={classes.actions} disableSpacing>
                 <Typography variant="subtitle2" component="span">

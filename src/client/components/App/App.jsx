@@ -68,7 +68,7 @@ const App = () => {
                 </Box>
                 <Box>
                     {user && profileCompareRows.length < 2 && (
-                        <UserCard user={user} />
+                        <UserCard user={user} onRefresh={(username) => dispatch(fetchProfile(username))} />
                     )}
                 </Box>
                 {profileUsernames.length > 0 && (
