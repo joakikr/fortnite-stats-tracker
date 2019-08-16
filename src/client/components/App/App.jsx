@@ -2,7 +2,6 @@ import React, { Fragment } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Container from '@material-ui/core/Container';
-import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
 
 // Components
@@ -63,27 +62,23 @@ const App = () => {
                 />
             )}
             <Container maxWidth="md">
-                <Box>
-                    {error && <Error message={error} />}
-                    {!user && !error && profileCompareRows.length < 2 && (
+                {error && <Error message={error} />}
+                {!user && !error && profileCompareRows.length < 2 && (
+                    <Typography>
+                        Search by epic username to see stats.
+                    </Typography>
+                )}
+                {profileCompareRows.length > 0 && (
+                    <Fragment>
                         <Typography>
-                            Search by epic username to see stats.
+                            Comparing {profileCompareRows.length} players
                         </Typography>
-                    )}
-                    {profileCompareRows.length > 0 && (
-                        <Fragment>
-                            <Typography>
-                                Comparing {profileCompareRows.length} players
-                            </Typography>
-                            <CompareTable rows={profileCompareRows} />
-                        </Fragment>
-                    )}
-                </Box>
-                <Box>
-                    {user && (
-                        <UserCard user={user} onRefresh={(username) => dispatch(fetchProfile(username))} />
-                    )}
-                </Box>
+                        <CompareTable rows={profileCompareRows} />
+                    </Fragment>
+                )}
+                {user && (
+                    <UserCard user={user} onRefresh={(username) => dispatch(fetchProfile(username))} />
+                )}
             </Container>
         </Fragment>
     );

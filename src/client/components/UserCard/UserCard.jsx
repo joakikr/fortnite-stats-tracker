@@ -84,7 +84,7 @@ const useStyles = makeStyles(theme => ({
         paddingBottom: 0,
         [theme.breakpoints.up('md')]: {
             display: 'flex',
-            justifyContent: 'space-evenly',
+            justifyContent: 'flex-start',
             paddingBottom: theme.spacing(2)
         }
     },
@@ -92,6 +92,11 @@ const useStyles = makeStyles(theme => ({
         display: 'none',
         [theme.breakpoints.up('md')]: {
             display: 'block'
+        }
+    },
+    statsContainer: {
+        [theme.breakpoints.up('md')]: {
+            margin: '0 40px'
         }
     },
     stats: {
@@ -120,6 +125,20 @@ const useStyles = makeStyles(theme => ({
 
 const RecentMatchesTables = ({ tables }) => {
     const classes = useStyles();
+    const entires = Object.entries(tables);
+
+    if (entires.length === 0) {
+        return (
+            <Typography
+                variant="body2"
+                color="textSecondary"
+                component="span"
+            >
+                There are no recent matches.
+            </Typography>
+        )
+    }
+
     return (
         <Box className={classes.scroll}>
             {Object.entries(tables).map(([date, rows]) => (
@@ -161,7 +180,7 @@ const UserCard = ({ user, onRefresh }) => {
                 subheader={user.platformNameLong}
             />
             <CardContent className={classes.content}>
-                <Box>
+                <Box className={classes.statsContainer}>
                     <Typography
                         variant="subtitle1"
                         color="textSecondary"

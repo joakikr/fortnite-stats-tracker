@@ -41,7 +41,7 @@ const RecentMatchesTable = ({ date, rows }) => {
                 </TableHead>
                 <TableBody>
                     {rows.map((row, index) => {
-                        const grading = index % 2 === 0 ? 50 : 0;
+                        const grading = index % 2 === 0 ? 50 : 100;
                         return (
                             <TableRow key={row.id}>
                                 <StyledTableCell grading={grading}>
