@@ -94,8 +94,18 @@ const useStyles = makeStyles(theme => ({
             display: 'block'
         }
     },
+    stats: {
+        [theme.breakpoints.down('sm')]: {
+            display: 'flex',
+            flexWrap: 'wrap',
+            alignItems: 'flex-end'
+        }
+    },
     statsItem: {
-        paddingTop: 0
+        paddingTop: 0,
+        [theme.breakpoints.down('sm')]: {
+            width: '100px'
+        }
     },
     scroll: {
         overflowX: 'auto',
@@ -159,7 +169,7 @@ const UserCard = ({ user, onRefresh }) => {
                     >
                         General stats
                     </Typography>
-                    <List>
+                    <List className={classes.stats}>
                         {generalStats.map(({ key, value }, index) => (
                             <ListItem
                                 className={classes.statsItem}

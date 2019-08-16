@@ -52,7 +52,7 @@ const RecentSearch = ({
     const classes = useStyles();
     return (
         <Paper square className={classes.root}>
-            <Container  maxWidth="md">
+            <Container maxWidth="md">
                 <Box className={classes.header}>
                     <Typography variant="subtitle1" component="h2">
                         Recently searched players{' '}
@@ -61,10 +61,7 @@ const RecentSearch = ({
                         </Typography>
                     </Typography>
                     <Box className={classes.button}>
-                        <Tooltip
-                            
-                            title="Clear all recently searched"
-                        >
+                        <Tooltip title="Clear all recently searched">
                             <IconButton
                                 className={classes.button}
                                 aria-label="clear all recently searched"
