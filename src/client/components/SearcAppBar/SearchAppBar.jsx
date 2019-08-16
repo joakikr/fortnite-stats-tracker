@@ -88,6 +88,7 @@ const SearchAppBar = ({ value, onChange, onEnter }) => {
                             </Box>
                             <InputBase
                                 value={value}
+                                type="search"
                                 onChange={e => onChange(e.target.value)}
                                 onKeyDown={event => onKeyDown(event, onEnter)}
                                 placeholder="Search by user..."
