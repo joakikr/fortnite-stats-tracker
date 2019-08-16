@@ -11,18 +11,19 @@ import Collapse from '@material-ui/core/Collapse';
 import Avatar from '@material-ui/core/Avatar';
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
-import { blue, deepPurple } from '@material-ui/core/colors';
+import { blue } from '@material-ui/core/colors';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
-import RecentMatchesTable from '../Tables/RecentMatchesTable';
+import RecentMatchesTables from '../Tables/RecentMatchesTables';
 import { GENERAL_STATS, PLAYLIST } from '../../consts';
 import RefreshIcon from '@material-ui/icons/Refresh';
 
 function createRow(id, matches, kills, wins, minutes, playlistId) {
     return {
         id,
+        playlistId,
         type: PLAYLIST[playlistId],
         matches,
         kills,
@@ -109,48 +110,11 @@ const useStyles = makeStyles(theme => ({
     statsItem: {
         paddingTop: 0,
         [theme.breakpoints.down('sm')]: {
-            width: '100px'
-        }
-    },
-    scroll: {
-        overflowX: 'auto',
-        maxHeight: '300px',
-        overflowY: 'scroll',
-        border: `1px solid ${deepPurple[600]}`,
-        [theme.breakpoints.up('md')]: {
-            minWidth: '550px'
+            minWidth: '100px',
+            width: 'auto'
         }
     }
 }));
-
-const RecentMatchesTables = ({ tables }) => {
-    const classes = useStyles();
-    const entires = Object.entries(tables);
-
-    if (entires.length === 0) {
-        return (
-            <Typography
-                variant="body2"
-                color="textSecondary"
-                component="span"
-            >
-                There are no recent matches.
-            </Typography>
-        )
-    }
-
-    return (
-        <Box className={classes.scroll}>
-            {Object.entries(tables).map(([date, rows]) => (
-                <RecentMatchesTable
-                    key={`recent-matches-table-${date}`}
-                    date={date}
-                    rows={rows}
-                />
-            ))}
-        </Box>
-    );
-};
 
 const UserCard = ({ user, onRefresh }) => {
     const classes = useStyles();

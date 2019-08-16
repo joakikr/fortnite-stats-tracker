@@ -10,3 +10,5 @@ export const PLAYLIST = {
     109: 'Arena Trios',
     161: 'Team Rumble'
 }
+
+export const KD_VALID_IDS = [31, 32, 33];

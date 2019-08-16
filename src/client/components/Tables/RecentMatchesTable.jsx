@@ -4,32 +4,35 @@ import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
-import Paper from '@material-ui/core/Paper';
+import Box from '@material-ui/core/Box';
 import StyledTableCell from '../StyledTableCell/StyledTableCell';
 
 const useStyles = makeStyles(theme => ({
     root: {
         width: '100%'
+    },
+    table: {
+        minWidth: '500px'
     }
 }));
 
-const headRows = (date) => [
-    { id: 'date', label: new Date(date).toLocaleDateString('no'), isNumeric: false },
+const headRows = [
+    { id: 'type', label: 'Type', isNumeric: false },
     { id: 'matches', label: 'Matches', isNumeric: true },
     { id: 'kills', label: 'Kills', isNumeric: true },
     { id: 'wins', label: 'Wins', isNumeric: true },
     { id: 'time', label: 'Time', isNumeric: true }
 ];
 
-const RecentMatchesTable = ({ date, rows }) => {
+const RecentMatchesTable = ({ rows }) => {
     const classes = useStyles();
 
     return (
-        <Paper square className={classes.root}>
-            <Table>
+        <Box className={classes.root}>
+            <Table className={classes.table}>
                 <TableHead>
                     <TableRow>
-                        {headRows(date).map(row => (
+                        {headRows.map(row => (
                             <StyledTableCell
                                 key={row.id}
                                 align={row.isNumeric ? 'right' : 'left'}
@@ -64,7 +67,7 @@ const RecentMatchesTable = ({ date, rows }) => {
                     })}
                 </TableBody>
             </Table>
-        </Paper>
+        </Box>
     );
 };
 
