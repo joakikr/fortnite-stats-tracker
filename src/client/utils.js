@@ -1,6 +1,6 @@
 export const sortByDesc = (a, b, orderBy) => {
-    let aValue = a[orderBy];
-    let bValue = b[orderBy];
+    let aValue = a[orderBy].split('%')[0];
+    let bValue = b[orderBy].split('%')[0];
 
     if (!isNaN(aValue)) {
         aValue = parseFloat(aValue);
