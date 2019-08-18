@@ -96,7 +96,7 @@ const CompareTable = ({ rows }) => {
 
     return (
         <Paper square className={classes.root}>
-            <Table>
+            <Table size="small">
                 <TableHead>
                     <TableRow>
                         {headRows.map(row => (
