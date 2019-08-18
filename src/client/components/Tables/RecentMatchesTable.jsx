@@ -12,7 +12,9 @@ const useStyles = makeStyles(theme => ({
         width: '100%'
     },
     table: {
-        minWidth: '500px'
+        [theme.breakpoints.up('md')]: {
+            minWidth: '500px'
+        }
     }
 }));
 
@@ -29,7 +31,7 @@ const RecentMatchesTable = ({ rows }) => {
 
     return (
         <Box className={classes.root}>
-            <Table className={classes.table}>
+            <Table size='small' className={classes.table}>
                 <TableHead>
                     <TableRow>
                         {headRows.map(row => (

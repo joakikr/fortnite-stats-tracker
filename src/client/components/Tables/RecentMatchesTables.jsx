@@ -8,10 +8,10 @@ import { KD_VALID_IDS } from '../../consts';
 const useStyles = makeStyles(theme => ({
     scroll: {
         overflowX: 'auto',
-        maxHeight: '300px',
-        overflowY: 'scroll',
         [theme.breakpoints.up('md')]: {
-            minWidth: '550px'
+            minWidth: '550px',
+            maxHeight: '300px',
+            overflowY: 'scroll',
         }
     },
     scrollBox: {
