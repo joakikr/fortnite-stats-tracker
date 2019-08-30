@@ -20,7 +20,7 @@ const StyledTableCell = (props) => {
     const { bodyColor, headColor, grading, ...rest } = props
     const classes = useStyles({ bodyColor, headColor, grading });
     return (
-        <TableCell {...rest} classes={{ root: classes.root, head: classes.head, body: classes.body }}/>
+        <TableCell {...rest} size="small" classes={{ root: classes.root, head: classes.head, body: classes.body }}/>
     )
 }
 
