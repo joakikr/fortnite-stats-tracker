@@ -8,6 +8,7 @@ import CardHeader from '@material-ui/core/CardHeader';
 import CardContent from '@material-ui/core/CardContent';
 import CardActions from '@material-ui/core/CardActions';
 import Collapse from '@material-ui/core/Collapse';
+import Container from '@material-ui/core/Container';
 import Avatar from '@material-ui/core/Avatar';
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
@@ -28,7 +29,7 @@ function createRow(id, matches, kills, wins, minutes, playlistId) {
         matches,
         kills,
         wins,
-        minutes: `${minutes}min`
+        minutes
     };
 }
 
@@ -60,6 +61,11 @@ function createTables(matches) {
 }
 
 const useStyles = makeStyles(theme => ({
+    container: {
+        [theme.breakpoints.down('sm')]: {
+            padding: 0
+        }
+    },
     card: {
         marginBottom: theme.spacing(1)
     },
@@ -82,6 +88,7 @@ const useStyles = makeStyles(theme => ({
         }
     },
     content: {
+        padding: theme.spacing(1),
         paddingBottom: 0,
         [theme.breakpoints.up('md')]: {
             display: 'flex',
@@ -129,75 +136,77 @@ const UserCard = ({ user, onRefresh }) => {
     }
 
     return (
-        <Card className={classes.card} square>
-            <CardHeader
-                avatar={<Avatar className={classes.avatar}>F</Avatar>}
-                action={
-                    <IconButton
-                        onClick={() => onRefresh(user.epicUserHandle)}
-                        aria-label="refresh"
+        <Container maxWidth="md" className={classes.container}>
+            <Card className={classes.card} square>
+                <CardHeader
+                    avatar={<Avatar className={classes.avatar}>F</Avatar>}
+                    action={
+                        <IconButton
+                            onClick={() => onRefresh(user.epicUserHandle)}
+                            aria-label="refresh"
+                        >
+                            <RefreshIcon />
+                        </IconButton>
+                    }
+                    title={user.epicUserHandle}
+                    subheader={user.platformNameLong}
+                />
+                <CardContent className={classes.content}>
+                    <Box className={classes.statsContainer}>
+                        <Typography
+                            variant="subtitle1"
+                            color="textSecondary"
+                            component="h2"
+                        >
+                            General stats
+                        </Typography>
+                        <List className={classes.stats}>
+                            {generalStats.map(({ key, value }, index) => (
+                                <ListItem
+                                    className={classes.statsItem}
+                                    key={`${user.epicUserHandle}-${index}`}
+                                >
+                                    <ListItemText primary={key} secondary={value} />
+                                </ListItem>
+                            ))}
+                        </List>
+                    </Box>
+                    <Box className={classes.contentTable}>
+                        <Typography
+                            variant="subtitle1"
+                            color="textSecondary"
+                            component="h2"
+                        >
+                            Recent Matches
+                        </Typography>
+                        <RecentMatchesTables tables={recentMatchesTables} />
+                    </Box>
+                    <CardActions className={classes.actions} disableSpacing>
+                        <Typography variant="subtitle2" component="span">
+                            See recent matches...
+                        </Typography>
+                        <IconButton
+                            className={clsx(classes.expand, {
+                                [classes.expandOpen]: expanded
+                            })}
+                            onClick={handleExpandClick}
+                            aria-expanded={expanded}
+                            aria-label="show more"
+                        >
+                            <ExpandMoreIcon />
+                        </IconButton>
+                    </CardActions>
+                    <Collapse
+                        className={classes.actions}
+                        in={expanded}
+                        timeout="auto"
+                        unmountOnExit
                     >
-                        <RefreshIcon />
-                    </IconButton>
-                }
-                title={user.epicUserHandle}
-                subheader={user.platformNameLong}
-            />
-            <CardContent className={classes.content}>
-                <Box className={classes.statsContainer}>
-                    <Typography
-                        variant="subtitle1"
-                        color="textSecondary"
-                        component="h2"
-                    >
-                        General stats
-                    </Typography>
-                    <List className={classes.stats}>
-                        {generalStats.map(({ key, value }, index) => (
-                            <ListItem
-                                className={classes.statsItem}
-                                key={`${user.epicUserHandle}-${index}`}
-                            >
-                                <ListItemText primary={key} secondary={value} />
-                            </ListItem>
-                        ))}
-                    </List>
-                </Box>
-                <Box className={classes.contentTable}>
-                    <Typography
-                        variant="subtitle1"
-                        color="textSecondary"
-                        component="h2"
-                    >
-                        Recent Matches
-                    </Typography>
-                    <RecentMatchesTables tables={recentMatchesTables} />
-                </Box>
-                <CardActions className={classes.actions} disableSpacing>
-                    <Typography variant="subtitle2" component="span">
-                        See recent matches...
-                    </Typography>
-                    <IconButton
-                        className={clsx(classes.expand, {
-                            [classes.expandOpen]: expanded
-                        })}
-                        onClick={handleExpandClick}
-                        aria-expanded={expanded}
-                        aria-label="show more"
-                    >
-                        <ExpandMoreIcon />
-                    </IconButton>
-                </CardActions>
-                <Collapse
-                    className={classes.actions}
-                    in={expanded}
-                    timeout="auto"
-                    unmountOnExit
-                >
-                    <RecentMatchesTables tables={recentMatchesTables} />
-                </Collapse>
-            </CardContent>
-        </Card>
+                        <RecentMatchesTables tables={recentMatchesTables} />
+                    </Collapse>
+                </CardContent>
+            </Card>
+        </Container>
     );
 };
 

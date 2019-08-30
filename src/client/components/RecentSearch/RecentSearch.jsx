@@ -20,7 +20,15 @@ const useStyles = makeStyles(theme => ({
         flexWrap: 'wrap',
         padding: theme.spacing(2),
         marginTop: -theme.spacing(2),
-        marginBottom: theme.spacing(2)
+        marginBottom: theme.spacing(2),
+        [theme.breakpoints.down('sm')]: {
+            padding: theme.spacing(1)
+        }
+    },
+    container: {
+        [theme.breakpoints.down('sm')]: {
+            padding: 0
+        }
     },
     header: {
         display: 'flex',
@@ -52,7 +60,7 @@ const RecentSearch = ({
     const classes = useStyles();
     return (
         <Paper square className={classes.root}>
-            <Container maxWidth="md">
+            <Container maxWidth="md" className={classes.container}>
                 <Box className={classes.header}>
                     <Typography variant="subtitle1" component="h2">
                         Recently searched players{' '}

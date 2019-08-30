@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Container from '@material-ui/core/Container';
 import Typography from '@material-ui/core/Typography';
+import { makeStyles } from '@material-ui/core/styles';
 
 // Components
 import UserCard from '../UserCard/UserCard';
@@ -30,7 +31,16 @@ import {
     getCompareRows
 } from '../../state/selectors';
 
+const useStyles = makeStyles(theme => ({
+    compare: {
+        [theme.breakpoints.down('sm')]: {
+            padding: theme.spacing(1)
+        }
+    }
+}));
+
 const App = () => {
+    const classes = useStyles();
     const dispatch = useDispatch();
     const profiles = useSelector(getProfiles);
     const profileUsernames = useSelector(getProfileUsernames);
@@ -61,9 +71,9 @@ const App = () => {
                     setProfile={username => dispatch(setProfile(username))}
                 />
             )}
-            <Container maxWidth="md">
+            <Container maxWidth="md" className={classes.compare}>
                 {error && <Error message={error} />}
-                {!user && !error && profileCompareRows.length < 2 && (
+                {!user && !error && profileCompareRows.length < 1 && (
                     <Typography>
                         Search by epic username to see stats.
                     </Typography>
@@ -76,10 +86,10 @@ const App = () => {
                         <CompareTable rows={profileCompareRows} />
                     </Fragment>
                 )}
-                {user && (
-                    <UserCard user={user} onRefresh={(username) => dispatch(fetchProfile(username))} />
-                )}
             </Container>
+            {user && (
+                <UserCard user={user} onRefresh={(username) => dispatch(fetchProfile(username))} />
+            )}
         </Fragment>
     );
 };

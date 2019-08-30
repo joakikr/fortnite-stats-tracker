@@ -20,10 +20,10 @@ const useStyles = makeStyles(theme => ({
 
 const headRows = [
     { id: 'type', label: 'Type', isNumeric: false },
-    { id: 'matches', label: 'Matches', isNumeric: true },
-    { id: 'kills', label: 'Kills', isNumeric: true },
-    { id: 'wins', label: 'Wins', isNumeric: true },
-    { id: 'time', label: 'Time', isNumeric: true }
+    { id: 'matches', label: '#M', isNumeric: true },
+    { id: 'kills', label: '#K', isNumeric: true },
+    { id: 'wins', label: '#W', isNumeric: true },
+    { id: 'time', label: '#min', isNumeric: true }
 ];
 
 const RecentMatchesTable = ({ rows }) => {
