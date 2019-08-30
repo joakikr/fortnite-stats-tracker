@@ -61,3 +61,13 @@ export const fetchProfile = (username) => dispatch => {
             dispatch(setError(errorMessage));
         });
 }
+
+export const addToLoading = (actionType) => ({
+    type: AT.FST_LOADING_ADD,
+    actionType
+});
+
+export const removeFromLoading = (actionType) => ({
+    type: AT.FST_LOADING_REMOVE,
+    actionType
+});

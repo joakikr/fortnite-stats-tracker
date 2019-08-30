@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Container from '@material-ui/core/Container';
 import Typography from '@material-ui/core/Typography';
+import LinearProgress from '@material-ui/core/LinearProgress';
 import { makeStyles } from '@material-ui/core/styles';
 
 // Components
@@ -28,7 +29,8 @@ import {
     getActiveProfile,
     getSearchValue,
     getProfilesToCompare,
-    getCompareRows
+    getCompareRows,
+    isLoading
 } from '../../state/selectors';
 
 const useStyles = makeStyles(theme => ({
@@ -36,6 +38,10 @@ const useStyles = makeStyles(theme => ({
         [theme.breakpoints.down('sm')]: {
             padding: theme.spacing(1)
         }
+    },
+    loading: {
+        marginTop: -theme.spacing(2),
+        marginBottom: theme.spacing(2) 
     }
 }));
 
@@ -50,6 +56,7 @@ const App = () => {
     const searchValue = useSelector(getSearchValue);
     const error = useSelector(getErrorMessage);
     const user = profiles[activeProfile];
+    const loading = useSelector(isLoading);
 
     return (
         <Fragment>
@@ -59,6 +66,9 @@ const App = () => {
                 onChange={username => dispatch(setSearchValue(username))}
                 onEnter={() => dispatch(fetchProfile(searchValue))}
             />
+            { loading && (
+                <LinearProgress className={classes.loading} />
+            )}
             {profileUsernames.length > 0 && (
                 <RecentSearch
                     compare={profilesToCompare}

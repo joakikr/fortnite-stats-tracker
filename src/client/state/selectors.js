@@ -32,3 +32,5 @@ export const getCompareRows = (state) => {
     })
     return rows;
 }
+export const getPending = (state) => state.pending || [];
+export const isLoading = (state) => getPending(state).length > 0;

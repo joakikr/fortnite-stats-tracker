@@ -4,6 +4,7 @@ import { Provider } from 'react-redux';
 import { createStore, applyMiddleware, compose } from 'redux';
 import promise from 'redux-promise-middleware';
 import thunk from 'redux-thunk';
+import loading from './state/middleware';
 import ls from 'local-storage';
 
 import App from './components/App/App'
@@ -23,7 +24,7 @@ const store = createStore(
     reducer,
     is,
     composeEnhancers(
-        applyMiddleware(promise, thunk)
+        applyMiddleware(promise, thunk, loading())
     )
 );
 

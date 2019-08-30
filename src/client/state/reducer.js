@@ -10,7 +10,8 @@ export const initialState = () => ({
     compare: [],
     search: '',
     active: '',
-    error: null
+    error: null,
+    pending: []
 });
 
 function updateCompare(compare, profile) {
@@ -78,6 +79,16 @@ const reducer = (state = initialState(), action) => {
             };
         case AT.FST_CLEAR_RECENTLY_SEARCHED:
             return clearProfiles();
+        case AT.FST_LOADING_ADD:
+                return {
+                    ...state,
+                    pending: [...state.pending, action.actionType]
+                };
+            case AT.FST_LOADING_REMOVE:
+                return {
+                    ...state,
+                    pending: state.pending.filter((elem) => elem !== action.actionType)
+                };
         default:
             return state;
     }
