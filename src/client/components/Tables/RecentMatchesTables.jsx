@@ -22,6 +22,9 @@ const useStyles = makeStyles(theme => ({
     },
     scrollHeaderItem: {
         marginRight: theme.spacing(2)
+    },
+    primary: {
+        marginRight: theme.spacing(0.5)
     }
 }));
 
@@ -48,6 +51,10 @@ const getKdForRowGroup = (rows, validIds) => {
     return kd.toFixed(2);
 };
 
+const getTotalMatchesForRowGroup = (rows, validIds) => rows
+    .filter(row => validIds.includes(row.playlistId))
+    .reduce((acc, row) => acc + row.matches, 0);
+
 const RecentMatchesTables = ({ tables }) => {
     const classes = useStyles();
     const entires = Object.entries(tables);
@@ -70,6 +77,7 @@ const RecentMatchesTables = ({ tables }) => {
                     <Box className={classes.scrollHeader}>
                         <Box className={classes.scrollHeaderItem}>
                             <Typography
+                                className={classes.primary}
                                 color="textPrimary"
                                 variant="subtitle2"
                                 component="span"
@@ -86,6 +94,24 @@ const RecentMatchesTables = ({ tables }) => {
                         </Box>
                         <Box className={classes.scrollHeaderItem}>
                             <Typography
+                                className={classes.primary}
+                                color="textPrimary"
+                                variant="subtitle2"
+                                component="span"
+                            >
+                                Games: 
+                            </Typography>
+                            <Typography
+                                color="textSecondary"
+                                variant="body2"
+                                component="span"
+                            >
+                                {getTotalMatchesForRowGroup(rows, KD_VALID_IDS)}
+                            </Typography>
+                        </Box>
+                        <Box className={classes.scrollHeaderItem}>
+                            <Typography
+                                className={classes.primary}
                                 color="textPrimary"
                                 variant="subtitle2"
                                 component="span"
