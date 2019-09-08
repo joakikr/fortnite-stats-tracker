@@ -1,6 +1,8 @@
 # Fortnite Stats Tracker
 This is a simple fortnite stats tracker utilizing [Fortnite Tracker](https://fortnitetracker.com/)'s API for fetching user info based on their *username*. It features throttling on the server to not violate fortnite tracker api's request limit.
 
+![](fst-preview.gif)
+
 ## Technologies
 * UI: React / Material UI
 * State: Redux / Redux Thunk / Redux Promise Middleware
