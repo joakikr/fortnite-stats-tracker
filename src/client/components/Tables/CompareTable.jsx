@@ -31,31 +31,31 @@ const grading = {
     },
     'wins': (val) => {
         if (val < 500) return 50;
-        else if (val < 1500) return 100;
-        else if (val < 3500) return 300;
-        else if (val < 7000) return 400;
+        else if (val < 1000) return 100;
+        else if (val < 2000) return 300;
+        else if (val < 4000) return 400;
         else return 500;
     },
     'win_percentage': (val) => {
         const withoutPercentage = parseFloat(val.split('%')[0]);
         if (withoutPercentage < 5) return 50;
-        else if (withoutPercentage < 15) return 100;
-        else if (withoutPercentage < 30) return 300;
-        else if (withoutPercentage < 50) return 400;
+        else if (withoutPercentage < 10) return 100;
+        else if (withoutPercentage < 15) return 300;
+        else if (withoutPercentage < 25) return 400;
         else return 500;
     },
     'kills': (val) => {
-        if (val < 10000) return 50;
-        else if (val < 20000) return 100;
-        else if (val < 50000) return 300;
-        else if (val < 100000) return 400;
+        if (val < 2000) return 50;
+        else if (val < 5000) return 100;
+        else if (val < 10000) return 300;
+        else if (val < 20000) return 400;
         else return 500;
     },
     'kd': (val) => {
         if (val < 1) return 50;
-        else if (val < 3) return 100;
-        else if (val < 6) return 300;
-        else if (val < 10) return 400;
+        else if (val < 2) return 100;
+        else if (val < 3) return 300;
+        else if (val < 5) return 400;
         else return 500;
     },
 }
