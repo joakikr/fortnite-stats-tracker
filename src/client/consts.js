@@ -8,7 +8,7 @@ export const PLAYLIST = {
     97: 'Creative',
     107: 'A. Solo',
     109: 'A. Trios',
-    161: 'Rubmle'
+    161: 'Rumble'
 }
 
 export const KD_VALID_IDS = [31, 32, 33];
