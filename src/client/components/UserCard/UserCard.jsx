@@ -1,5 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
+import moment from 'moment';
+import momentDuration from 'moment-duration-format';
 import { makeStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
 import Box from '@material-ui/core/Box';
@@ -12,13 +14,12 @@ import Container from '@material-ui/core/Container';
 import Avatar from '@material-ui/core/Avatar';
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
-import { blue } from '@material-ui/core/colors';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import RecentMatchesTables from '../Tables/RecentMatchesTables';
-import { GENERAL_STATS, PLAYLIST } from '../../consts';
+import { GENERAL_STATS, PLAYLIST, COUNTDOWN_TIMER } from '../../consts';
 import RefreshIcon from '@material-ui/icons/Refresh';
 
 function createRow(id, matches, kills, wins, minutes, playlistId) {
@@ -120,6 +121,11 @@ const useStyles = makeStyles(theme => ({
             minWidth: '100px',
             width: 'auto'
         }
+    },
+    countdown: {
+        display: 'flex',
+        justifyContent: 'flex-end',
+        padding: theme.spacing(1)
     }
 }));
 
@@ -130,6 +136,25 @@ const UserCard = ({ user, onRefresh }) => {
     );
     const recentMatchesTables = createTables(user.recentMatches);
     const [expanded, setExpanded] = useState(false);
+
+    let countdownTimer = null;
+    const [timer, setTimer] = useState('2m 30s');
+    useEffect(() => {
+        countdownTimer = COUNTDOWN_TIMER;
+        const interval = setInterval(() => {
+            const duration = moment.duration(countdownTimer, 'seconds');
+            const formatted = duration.format("m[m] ss[s]");
+            setTimer(formatted)
+            
+            countdownTimer -= 1;
+            if (countdownTimer <= 0) {
+                onRefresh(user.epicUserHandle)
+                setTimer(COUNTDOWN_TIMER);
+                countdownTimer = COUNTDOWN_TIMER;
+            }
+        }, 1000);
+        return () => clearInterval(interval)
+    }, [user])
 
     function handleExpandClick() {
         setExpanded(!expanded);
@@ -205,6 +230,14 @@ const UserCard = ({ user, onRefresh }) => {
                         <RecentMatchesTables tables={recentMatchesTables} />
                     </Collapse>
                 </CardContent>
+                <Box className={classes.countdown}>
+                    <Typography
+                        variant="caption"
+                        color="textSecondary"
+                        component="h2">
+                        Stats update in { timer }
+                    </Typography>
+                </Box>
             </Card>
         </Container>
     );
