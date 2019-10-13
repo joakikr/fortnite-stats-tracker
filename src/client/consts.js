@@ -14,3 +14,4 @@ export const PLAYLIST = {
 export const KD_VALID_IDS = [31, 32, 33];
 
 export const COUNTDOWN_TIMER = 150; // 2min 30sec
+export const COUNTDOWN_TIMER_FORMATTED = '2m 30s';

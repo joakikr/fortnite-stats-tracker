@@ -19,7 +19,7 @@ import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import RecentMatchesTables from '../Tables/RecentMatchesTables';
-import { GENERAL_STATS, PLAYLIST, COUNTDOWN_TIMER } from '../../consts';
+import { GENERAL_STATS, PLAYLIST, COUNTDOWN_TIMER, COUNTDOWN_TIMER_FORMATTED } from '../../consts';
 import RefreshIcon from '@material-ui/icons/Refresh';
 
 function createRow(id, matches, kills, wins, minutes, playlistId) {
@@ -138,7 +138,7 @@ const UserCard = ({ user, onRefresh }) => {
     const [expanded, setExpanded] = useState(false);
 
     let countdownTimer = null;
-    const [timer, setTimer] = useState('2m 30s');
+    const [timer, setTimer] = useState(COUNTDOWN_TIMER_FORMATTED);
     useEffect(() => {
         countdownTimer = COUNTDOWN_TIMER;
         const interval = setInterval(() => {
@@ -149,7 +149,7 @@ const UserCard = ({ user, onRefresh }) => {
             countdownTimer -= 1;
             if (countdownTimer <= 0) {
                 onRefresh(user.epicUserHandle)
-                setTimer(COUNTDOWN_TIMER);
+                setTimer(COUNTDOWN_TIMER_FORMATTED);
                 countdownTimer = COUNTDOWN_TIMER;
             }
         }, 1000);
