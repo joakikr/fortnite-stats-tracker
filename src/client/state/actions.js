@@ -62,6 +62,11 @@ export const fetchProfile = (username) => dispatch => {
         });
 }
 
+export const toggleDarkMode = (isDarkMode) => ({
+    type: AT.FST_TOGGLE_DARK_MODE,
+    isDarkMode
+});
+
 export const addToLoading = (actionType) => ({
     type: AT.FST_LOADING_ADD,
     actionType

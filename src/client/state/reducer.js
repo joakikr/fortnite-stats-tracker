@@ -11,7 +11,8 @@ export const initialState = () => ({
     search: '',
     active: '',
     error: null,
-    pending: []
+    pending: [],
+    isDarkMode: false
 });
 
 function updateCompare(compare, profile) {
@@ -34,9 +35,14 @@ function updateProfiles(profiles, profile, target) {
     return profiles;
 }
 
+function updateDarkMode(isDarkMode) {
+    ls('fst-dark-mode', isDarkMode === true);
+    return isDarkMode === true;
+}
+
 function clearProfiles() {
     // Clear saved instances in LocalStorage 
-    ls.clear();
+    ls.remove('fst-profiles');
     return initialState();
 }
 
@@ -78,17 +84,25 @@ const reducer = (state = initialState(), action) => {
                 compare: []
             };
         case AT.FST_CLEAR_RECENTLY_SEARCHED:
-            return clearProfiles();
+            return {
+                ...clearProfiles(),
+                isDarkMode: state.isDarkMode
+            };
         case AT.FST_LOADING_ADD:
                 return {
                     ...state,
                     pending: [...state.pending, action.actionType]
                 };
-            case AT.FST_LOADING_REMOVE:
-                return {
-                    ...state,
-                    pending: state.pending.filter((elem) => elem !== action.actionType)
-                };
+        case AT.FST_LOADING_REMOVE:
+            return {
+                ...state,
+                pending: state.pending.filter((elem) => elem !== action.actionType)
+            };
+        case AT.FST_TOGGLE_DARK_MODE:
+            return {
+                ...state,
+                isDarkMode: updateDarkMode(action.isDarkMode)
+            };
         default:
             return state;
     }

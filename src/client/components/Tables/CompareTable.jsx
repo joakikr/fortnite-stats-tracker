@@ -101,6 +101,7 @@ const CompareTable = ({ rows }) => {
                     <TableRow>
                         {headRows.map(row => (
                             <StyledTableCell
+                                grader='tableHeader'
                                 key={row.id}
                                 align={row.isNumeric ? 'right' : 'left'}
                                 sortDirection={
@@ -121,22 +122,22 @@ const CompareTable = ({ rows }) => {
                 <TableBody>
                     {sortStable(rows, getSorting(order, orderBy)).map(row => (
                         <TableRow key={row.username}>
-                            <StyledTableCell grading={500} bodyColor={green}>
+                            <StyledTableCell grading={500} grader='compare'>
                                 {row.username}
                             </StyledTableCell>
-                            <StyledTableCell align="right" grading={getGrading('matches', row.matches)} bodyColor={green}>
+                            <StyledTableCell align="right" grader='compare' grading={getGrading('matches', row.matches)}>
                                 {row.matches}
                             </StyledTableCell>
-                            <StyledTableCell align="right" grading={getGrading('wins', row.wins)} bodyColor={green}>
+                            <StyledTableCell align="right" grader='compare' grading={getGrading('wins', row.wins)}>
                                 {row.wins}
                             </StyledTableCell>
-                            <StyledTableCell align="right" grading={getGrading('win_percentage', row.win_percentage)} bodyColor={green}>
+                            <StyledTableCell align="right" grader='compare' grading={getGrading('win_percentage', row.win_percentage)}>
                                 {row.win_percentage}
                             </StyledTableCell>
-                            <StyledTableCell align="right" grading={getGrading('kills', row.kills)} bodyColor={green}>
+                            <StyledTableCell align="right" grader='compare' grading={getGrading('kills', row.kills)}>
                                 {row.kills}
                             </StyledTableCell>
-                            <StyledTableCell align="right" grading={getGrading('kd', row.kd)} bodyColor={green}>
+                            <StyledTableCell align="right" grader='compare' grading={getGrading('kd', row.kd)}>
                                 {row.kd}
                             </StyledTableCell>
                         </TableRow>

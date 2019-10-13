@@ -7,7 +7,6 @@ import Container from '@material-ui/core/Container';
 import Box from '@material-ui/core/Box';
 import { fade, makeStyles } from '@material-ui/core/styles';
 import SearchIcon from '@material-ui/icons/Search';
-import { deepPurple } from '@material-ui/core/colors';
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -15,7 +14,7 @@ const useStyles = makeStyles(theme => ({
         marginBottom: '16px'
     },
     bar: {
-        backgroundColor: deepPurple[600]
+        backgroundColor: theme.palette.bar[600]
     },
     title: {
         flexGrow: 1,

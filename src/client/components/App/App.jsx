@@ -4,7 +4,8 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import Container from '@material-ui/core/Container';
 import Typography from '@material-ui/core/Typography';
 import LinearProgress from '@material-ui/core/LinearProgress';
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles, MuiThemeProvider } from '@material-ui/core/styles';
+import { defaultTheme, darkModeTheme } from './themes';
 
 // Components
 import UserCard from '../UserCard/UserCard';
@@ -12,6 +13,7 @@ import Error from '../Error/Error';
 import SearchAppBar from '../SearcAppBar/SearchAppBar';
 import RecentSearch from '../RecentSearch/RecentSearch';
 import CompareTable from '../Tables/CompareTable';
+import DarkModeButton from '../DarkModeButton/DarkModeButton';
 
 // Redux
 import {
@@ -20,7 +22,8 @@ import {
     setSearchValue,
     toggleToCompare,
     clearCompares,
-    clearRecentlySearched
+    clearRecentlySearched,
+    toggleDarkMode
 } from '../../state/actions';
 import {
     getProfiles,
@@ -30,6 +33,7 @@ import {
     getSearchValue,
     getProfilesToCompare,
     getCompareRows,
+    isDarkMode,
     isLoading
 } from '../../state/selectors';
 
@@ -56,10 +60,12 @@ const App = () => {
     const searchValue = useSelector(getSearchValue);
     const error = useSelector(getErrorMessage);
     const user = profiles[activeProfile];
-    const loading = useSelector(isLoading);
+    const loading = useSelector(isLoading);    
+    const darkMode = useSelector(isDarkMode);
+    let theme = darkMode ? darkModeTheme : defaultTheme;
 
     return (
-        <Fragment>
+        <MuiThemeProvider theme={theme}>
             <CssBaseline />
             <SearchAppBar
                 value={searchValue}
@@ -100,7 +106,11 @@ const App = () => {
             {user && (
                 <UserCard user={user} onRefresh={(username) => dispatch(fetchProfile(username))} />
             )}
-        </Fragment>
+            <DarkModeButton 
+                isDarkMode={darkMode}
+                toggleDarkMode={isDarkMode => dispatch(toggleDarkMode(isDarkMode))} 
+            />
+        </MuiThemeProvider>
     );
 };
 

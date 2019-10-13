@@ -36,6 +36,7 @@ const RecentMatchesTable = ({ rows }) => {
                     <TableRow>
                         {headRows.map(row => (
                             <StyledTableCell
+                                grader='tableHeader'
                                 key={row.id}
                                 align={row.isNumeric ? 'right' : 'left'}
                             >
@@ -46,22 +47,22 @@ const RecentMatchesTable = ({ rows }) => {
                 </TableHead>
                 <TableBody>
                     {rows.map((row, index) => {
-                        const grading = index % 2 === 0 ? 50 : 100;
+                        const grading = index % 2 === 0 ? 'low' : 'high'
                         return (
                             <TableRow key={row.id}>
-                                <StyledTableCell grading={grading}>
+                                <StyledTableCell grader='tableBody' grading={grading}>
                                     {row.type}
                                 </StyledTableCell>
-                                <StyledTableCell grading={grading} align="right">
+                                <StyledTableCell grader='tableBody' grading={grading} align="right">
                                     {row.matches}
                                 </StyledTableCell>
-                                <StyledTableCell grading={grading} align="right">
+                                <StyledTableCell grader='tableBody' grading={grading} align="right">
                                     {row.kills}
                                 </StyledTableCell>
-                                <StyledTableCell grading={grading} align="right">
+                                <StyledTableCell grader='tableBody' grading={grading} align="right">
                                     {row.wins}
                                 </StyledTableCell>
-                                <StyledTableCell grading={grading} align="right">
+                                <StyledTableCell grader='tableBody' grading={grading} align="right">
                                     {row.minutes}
                                 </StyledTableCell>
                             </TableRow>

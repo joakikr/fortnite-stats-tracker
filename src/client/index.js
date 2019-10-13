@@ -12,17 +12,23 @@ import reducer, { initialState } from './state/reducer';
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
-const is = initialState();
+const state = initialState();
 const savedProfiles = ls('fst-profiles');
+const darkMode = ls('fst-dark-mode');
 
 if (savedProfiles) {
     // Just assume its correct #YOLO
-    is.profiles = JSON.parse(savedProfiles)
+    state.profiles = JSON.parse(savedProfiles)
 }
+
+if (darkMode) {
+    state.isDarkMode = true;
+}
+
 
 const store = createStore(
     reducer,
-    is,
+    state,
     composeEnhancers(
         applyMiddleware(promise, thunk, loading())
     )

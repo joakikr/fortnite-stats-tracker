@@ -80,7 +80,7 @@ const useStyles = makeStyles(theme => ({
         transform: 'rotate(180deg)'
     },
     avatar: {
-        backgroundColor: blue[500]
+        backgroundColor: theme.palette.secondary[600]
     },
     actions: {
         [theme.breakpoints.up('md')]: {
