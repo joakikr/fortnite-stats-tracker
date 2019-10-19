@@ -109,7 +109,9 @@ const useStyles = makeStyles(theme => ({
     contentTable: {
         display: 'none',
         [theme.breakpoints.up('md')]: {
-            display: 'block'
+            display: 'block',
+            width: '70%',
+            marginRight: theme.spacing(1)
         }
     },
     statsContainer: {
@@ -157,6 +159,9 @@ const UserCard = ({ user, onRefresh }) => {
     }
 
     function handleSetGameView(_event, newView) {
+        if (newView) {
+            setExpanded(true);
+        }
         setGameView(newView);
     };
 
