@@ -3,7 +3,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import ToggleButton from '@material-ui/lab/ToggleButton';
 import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup';
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles((theme) => ({
     gameViewButton: {
         height: '30px',
         fontSize: '0.75rem'
@@ -20,6 +20,9 @@ const GameViewButtonGroup = ({ gameView, handleGameViewChange }) => {
             </ToggleButton>
             <ToggleButton className={classes.gameViewButton} key={2} value="arena">
                 Arena
+            </ToggleButton>
+            <ToggleButton className={classes.gameViewButton} key={3} value="ltm">
+                LTM
             </ToggleButton>
         </ToggleButtonGroup>
     );

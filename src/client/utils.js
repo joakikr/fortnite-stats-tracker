@@ -1,4 +1,4 @@
-import { KD_VALID_IDS_PUBLIC, KD_VALID_IDS_AREBA, KD_VALID_IDS_ALL } from './consts';
+import { KD_VALID_IDS_PUBLIC, KD_VALID_IDS_AREBA, KD_VALID_IDS_LTM, KD_VALID_IDS_ALL } from './consts';
 
 export const sortByDesc = (a, b, orderBy) => {
     let aValue = a[orderBy].split('%')[0];
@@ -38,7 +38,9 @@ export const gameViewToGameIds = (view) => {
         case 'public':
             return KD_VALID_IDS_PUBLIC;
         case 'arena':
-            return KD_VALID_IDS_AREBA
+            return KD_VALID_IDS_AREBA;
+        case 'ltm':
+            return KD_VALID_IDS_LTM;
         default: 
             return KD_VALID_IDS_ALL;
     }
@@ -50,6 +52,8 @@ export const gameViewFilter = (view) => {
             return (matches) => matches.filter((match) => KD_VALID_IDS_PUBLIC.includes(match.playlistId))
         case 'arena':
             return (matches) => matches.filter((match) => KD_VALID_IDS_AREBA.includes(match.playlistId))
+        case 'ltm':
+            return (matches) => matches.filter((match) => KD_VALID_IDS_LTM.includes(match.playlistId))
         default: 
             return (matches) => matches;
     }
