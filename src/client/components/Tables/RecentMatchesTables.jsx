@@ -3,7 +3,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
 import RecentMatchesTable from '../Tables/RecentMatchesTable';
-import { KD_VALID_IDS } from '../../consts';
+import { KD_VALID_IDS_PUBLIC } from '../../consts';
 
 const useStyles = makeStyles(theme => ({
     scroll: {
@@ -55,7 +55,7 @@ const getTotalMatchesForRowGroup = (rows, validIds) => rows
     .filter(row => validIds.includes(row.playlistId))
     .reduce((acc, row) => acc + row.matches, 0);
 
-const RecentMatchesTables = ({ tables }) => {
+const RecentMatchesTables = ({ tables, ids }) => {
     const classes = useStyles();
     const entires = Object.entries(tables);
 
@@ -106,7 +106,7 @@ const RecentMatchesTables = ({ tables }) => {
                                 variant="body2"
                                 component="span"
                             >
-                                {getTotalMatchesForRowGroup(rows, KD_VALID_IDS)}
+                                {getTotalMatchesForRowGroup(rows, ids)}
                             </Typography>
                         </Box>
                         <Box className={classes.scrollHeaderItem}>
@@ -123,7 +123,7 @@ const RecentMatchesTables = ({ tables }) => {
                                 variant="body2"
                                 component="span"
                             >
-                                {getKdForRowGroup(rows, KD_VALID_IDS)}
+                                {getKdForRowGroup(rows, ids)}
                             </Typography>
                         </Box>
                     </Box>
