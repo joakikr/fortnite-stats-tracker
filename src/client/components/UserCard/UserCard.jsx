@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import moment from 'moment';
 import momentDuration from 'moment-duration-format';
 import { makeStyles } from '@material-ui/core/styles';
-import clsx from 'clsx';
 import Box from '@material-ui/core/Box';
 import Card from '@material-ui/core/Card';
 import CardHeader from '@material-ui/core/CardHeader';
@@ -14,7 +13,6 @@ import Container from '@material-ui/core/Container';
 import Avatar from '@material-ui/core/Avatar';
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
@@ -79,16 +77,6 @@ const useStyles = makeStyles(theme => ({
     card: {
         marginBottom: theme.spacing(1)
     },
-    expand: {
-        transform: 'rotate(0deg)',
-        marginLeft: 'auto',
-        transition: theme.transitions.create('transform', {
-            duration: theme.transitions.duration.shortest
-        })
-    },
-    expandOpen: {
-        transform: 'rotate(180deg)'
-    },
     avatar: {
         backgroundColor: theme.palette.secondary[600]
     },
@@ -123,7 +111,8 @@ const useStyles = makeStyles(theme => ({
         [theme.breakpoints.down('sm')]: {
             display: 'flex',
             flexWrap: 'wrap',
-            alignItems: 'flex-end'
+            alignItems: 'flex-end',
+            justifyContent: 'space-between'
         }
     },
     statsItem: {
@@ -135,14 +124,17 @@ const useStyles = makeStyles(theme => ({
     },
     countdown: {
         display: 'flex',
-        justifyContent: 'flex-end',
-        padding: theme.spacing(1)
+        justifyContent: 'flex-start',
+        padding: theme.spacing(1),
+        [theme.breakpoints.up('md')]: {
+            justifyContent: 'flex-end'
+        }
     },
     mobileOnly: {
         [theme.breakpoints.up('md')]: {
             display: 'none'
         }
-    },
+    }
 }));
 
 const UserCard = ({ user, onRefresh }) => {
@@ -151,17 +143,9 @@ const UserCard = ({ user, onRefresh }) => {
         GENERAL_STATS.includes(stat.key)
     );
     const [gameView, setGameView] = useState('public');
-    const [expanded, setExpanded] = useState(true);
     const recentMatchesTables = createTables(user.recentMatches, gameView);
 
-    function handleExpandClick() {
-        setExpanded(!expanded);
-    }
-
     function handleSetGameView(_event, newView) {
-        if (newView) {
-            setExpanded(true);
-        }
         setGameView(newView);
     };
 
@@ -237,28 +221,11 @@ const UserCard = ({ user, onRefresh }) => {
                         <Typography variant="subtitle2" component="span">
                             Recent Matches
                         </Typography>
-                        <div>
-                            <GameViewButtonGroup gameView={gameView} handleGameViewChange={handleSetGameView} />
-                            <IconButton
-                                className={clsx(classes.expand, {
-                                    [classes.expandOpen]: expanded
-                                })}
-                                onClick={handleExpandClick}
-                                aria-expanded={expanded}
-                                aria-label="show more"
-                            >
-                                <ExpandMoreIcon />
-                            </IconButton>
-                        </div>
+                        <GameViewButtonGroup gameView={gameView} handleGameViewChange={handleSetGameView} />
                     </CardActions>
-                    <Collapse
-                        className={classes.mobileOnly}
-                        in={expanded}
-                        timeout="auto"
-                        unmountOnExit
-                    >
+                    <div className={classes.mobileOnly}>
                         <RecentMatchesTables tables={recentMatchesTables} ids={gameViewToGameIds(gameView)} />
-                    </Collapse>
+                    </div>
                 </CardContent>
                 <Box className={classes.countdown}>
                     <Typography
