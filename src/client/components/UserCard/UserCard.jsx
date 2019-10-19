@@ -18,9 +18,17 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
-import RecentMatchesTables from '../Tables/RecentMatchesTables';
-import { GENERAL_STATS, PLAYLIST, COUNTDOWN_TIMER, COUNTDOWN_TIMER_FORMATTED } from '../../consts';
 import RefreshIcon from '@material-ui/icons/Refresh';
+
+import GameViewButtonGroup from '../GameViewButtonGroup/GameViewButtonGroup';
+import RecentMatchesTables from '../Tables/RecentMatchesTables';
+import { 
+    GENERAL_STATS, 
+    PLAYLIST, 
+    COUNTDOWN_TIMER, 
+    COUNTDOWN_TIMER_FORMATTED
+} from '../../consts';
+import { gameViewToGameIds, gameViewFilter } from '../../utils';
 
 function createRow(id, matches, kills, wins, minutes, playlistId) {
     return {
@@ -41,11 +49,12 @@ function createRows(matches) {
     );
 }
 
-function createTables(matches) {
+function createTables(matches, view) {
     const rawGroups = {};
     const groups = {};
 
-    matches.forEach(match => {
+    const filter = gameViewFilter(view);
+    filter(matches).forEach(match => {
         let date = match.dateCollected.split('T')[0];
         if (date in rawGroups) {
             rawGroups[date].push(match);
@@ -83,11 +92,6 @@ const useStyles = makeStyles(theme => ({
     avatar: {
         backgroundColor: theme.palette.secondary[600]
     },
-    actions: {
-        [theme.breakpoints.up('md')]: {
-            display: 'none'
-        }
-    },
     content: {
         padding: theme.spacing(1),
         paddingBottom: 0,
@@ -96,6 +100,10 @@ const useStyles = makeStyles(theme => ({
             justifyContent: 'flex-start',
             paddingBottom: theme.spacing(2)
         }
+    },
+    contentTableMeta: {
+        display: 'flex',
+        justifyContent: 'space-between'
     },
     contentTable: {
         display: 'none',
@@ -126,7 +134,12 @@ const useStyles = makeStyles(theme => ({
         display: 'flex',
         justifyContent: 'flex-end',
         padding: theme.spacing(1)
-    }
+    },
+    mobileOnly: {
+        [theme.breakpoints.up('md')]: {
+            display: 'none'
+        }
+    },
 }));
 
 const UserCard = ({ user, onRefresh }) => {
@@ -134,8 +147,17 @@ const UserCard = ({ user, onRefresh }) => {
     const generalStats = user.lifeTimeStats.filter(stat =>
         GENERAL_STATS.includes(stat.key)
     );
-    const recentMatchesTables = createTables(user.recentMatches);
-    const [expanded, setExpanded] = useState(false);
+    const [gameView, setGameView] = useState('public');
+    const [expanded, setExpanded] = useState(true);
+    const recentMatchesTables = createTables(user.recentMatches, gameView);
+
+    function handleExpandClick() {
+        setExpanded(!expanded);
+    }
+
+    function handleSetGameView(_event, newView) {
+        setGameView(newView);
+    };
 
     let countdownTimer = null;
     const [timer, setTimer] = useState(COUNTDOWN_TIMER_FORMATTED);
@@ -147,7 +169,7 @@ const UserCard = ({ user, onRefresh }) => {
             setTimer(formatted)
             
             countdownTimer -= 1;
-            if (countdownTimer <= 0) {
+            if (countdownTimer < 0) {
                 onRefresh(user.epicUserHandle)
                 setTimer(COUNTDOWN_TIMER_FORMATTED);
                 countdownTimer = COUNTDOWN_TIMER;
@@ -155,10 +177,6 @@ const UserCard = ({ user, onRefresh }) => {
         }, 1000);
         return () => clearInterval(interval)
     }, [user])
-
-    function handleExpandClick() {
-        setExpanded(!expanded);
-    }
 
     return (
         <Container maxWidth="md" className={classes.container}>
@@ -197,37 +215,43 @@ const UserCard = ({ user, onRefresh }) => {
                         </List>
                     </Box>
                     <Box className={classes.contentTable}>
-                        <Typography
-                            variant="subtitle1"
-                            color="textSecondary"
-                            component="h2"
-                        >
+                        <div className={classes.contentTableMeta}>
+                            <Typography
+                                variant="subtitle1"
+                                color="textSecondary"
+                                component="h2"
+                            >
+                                Recent Matches
+                            </Typography>
+                            <GameViewButtonGroup gameView={gameView} handleGameViewChange={handleSetGameView} />
+                        </div>
+                        <RecentMatchesTables tables={recentMatchesTables} ids={gameViewToGameIds(gameView)} />
+                    </Box>
+                    <CardActions className={`${classes.contentTableMeta} ${classes.mobileOnly}`} disableSpacing>
+                        <Typography variant="subtitle2" component="span">
                             Recent Matches
                         </Typography>
-                        <RecentMatchesTables tables={recentMatchesTables} />
-                    </Box>
-                    <CardActions className={classes.actions} disableSpacing>
-                        <Typography variant="subtitle2" component="span">
-                            See recent matches...
-                        </Typography>
-                        <IconButton
-                            className={clsx(classes.expand, {
-                                [classes.expandOpen]: expanded
-                            })}
-                            onClick={handleExpandClick}
-                            aria-expanded={expanded}
-                            aria-label="show more"
-                        >
-                            <ExpandMoreIcon />
-                        </IconButton>
+                        <div>
+                            <GameViewButtonGroup gameView={gameView} handleGameViewChange={handleSetGameView} />
+                            <IconButton
+                                className={clsx(classes.expand, {
+                                    [classes.expandOpen]: expanded
+                                })}
+                                onClick={handleExpandClick}
+                                aria-expanded={expanded}
+                                aria-label="show more"
+                            >
+                                <ExpandMoreIcon />
+                            </IconButton>
+                        </div>
                     </CardActions>
                     <Collapse
-                        className={classes.actions}
+                        className={classes.mobileOnly}
                         in={expanded}
                         timeout="auto"
                         unmountOnExit
                     >
-                        <RecentMatchesTables tables={recentMatchesTables} />
+                        <RecentMatchesTables tables={recentMatchesTables} ids={gameViewToGameIds(gameView)} />
                     </Collapse>
                 </CardContent>
                 <Box className={classes.countdown}>
