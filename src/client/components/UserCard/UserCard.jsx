@@ -103,7 +103,8 @@ const useStyles = makeStyles(theme => ({
     },
     contentTableMeta: {
         display: 'flex',
-        justifyContent: 'space-between'
+        justifyContent: 'space-between',
+        marginBottom: theme.spacing(1)
     },
     contentTable: {
         display: 'none',
