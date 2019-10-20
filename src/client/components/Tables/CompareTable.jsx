@@ -6,10 +6,10 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import TableSortLabel from '@material-ui/core/TableSortLabel';
 import Paper from '@material-ui/core/Paper';
-import { green } from '@material-ui/core/colors';
 
 import StyledTableCell from '../StyledTableCell/StyledTableCell';
 import { sortStable, getSorting } from '../../utils';
+import { getGrading } from './grader';
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -21,45 +21,6 @@ const useStyles = makeStyles(theme => ({
     }
 }));
 
-const grading = {
-    'matches': (val) => {
-        if (val < 1000) return 50;
-        else if (val < 4000) return 100;
-        else if (val < 8000) return 300;
-        else if (val < 15000) return 400;
-        else return 500;
-    },
-    'wins': (val) => {
-        if (val < 500) return 50;
-        else if (val < 1000) return 100;
-        else if (val < 2000) return 300;
-        else if (val < 4000) return 400;
-        else return 500;
-    },
-    'win_percentage': (val) => {
-        const withoutPercentage = parseFloat(val.split('%')[0]);
-        if (withoutPercentage < 5) return 50;
-        else if (withoutPercentage < 10) return 100;
-        else if (withoutPercentage < 15) return 300;
-        else if (withoutPercentage < 25) return 400;
-        else return 500;
-    },
-    'kills': (val) => {
-        if (val < 2000) return 50;
-        else if (val < 5000) return 100;
-        else if (val < 10000) return 300;
-        else if (val < 20000) return 400;
-        else return 500;
-    },
-    'kd': (val) => {
-        if (val < 1) return 50;
-        else if (val < 2) return 100;
-        else if (val < 3) return 300;
-        else if (val < 5) return 400;
-        else return 500;
-    },
-}
-
 const headRows = [
     { id: 'username', label: 'Username', isNumeric: false },
     { id: 'matches', label: 'Matches', isNumeric: true },
@@ -69,17 +30,7 @@ const headRows = [
     { id: 'kd', label: 'K/d', isNumeric: true }
 ];
 
-const getGrading = (id, value) => {
-    const grader = grading[id];
-
-    if (grader) {
-        return grader(value);
-    }
-    
-    return 50;
-}
-
-const CompareTable = ({ rows }) => {
+const CompareTable = ({ rows, view }) => {
     const classes = useStyles();
     const [order, setOrder] = React.useState('asc');
     const [orderBy, setOrderBy] = React.useState('username');
@@ -125,19 +76,19 @@ const CompareTable = ({ rows }) => {
                             <StyledTableCell grading={500} grader='compare'>
                                 {row.username}
                             </StyledTableCell>
-                            <StyledTableCell align="right" grader='compare' grading={getGrading('matches', row.matches)}>
+                            <StyledTableCell align="right" grader='compare' grading={getGrading('matches', row.matches, view)}>
                                 {row.matches}
                             </StyledTableCell>
-                            <StyledTableCell align="right" grader='compare' grading={getGrading('wins', row.wins)}>
+                            <StyledTableCell align="right" grader='compare' grading={getGrading('wins', row.wins, view)}>
                                 {row.wins}
                             </StyledTableCell>
-                            <StyledTableCell align="right" grader='compare' grading={getGrading('win_percentage', row.win_percentage)}>
-                                {row.win_percentage}
+                            <StyledTableCell align="right" grader='compare' grading={getGrading('win_percentage', row.win_percentage, view)}>
+                                {row.win_percentage}%
                             </StyledTableCell>
-                            <StyledTableCell align="right" grader='compare' grading={getGrading('kills', row.kills)}>
+                            <StyledTableCell align="right" grader='compare' grading={getGrading('kills', row.kills, view)}>
                                 {row.kills}
                             </StyledTableCell>
-                            <StyledTableCell align="right" grader='compare' grading={getGrading('kd', row.kd)}>
+                            <StyledTableCell align="right" grader='compare' grading={getGrading('kd', row.kd, view)}>
                                 {row.kd}
                             </StyledTableCell>
                         </TableRow>

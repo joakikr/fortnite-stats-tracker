@@ -42,8 +42,8 @@ function createRow(id, matches, kills, wins, minutes, playlistId) {
 
 function createRows(matches) {
     return matches.map(
-        ({ id, matches, kills, top1, minutesPlayed, playlistId }) =>
-            createRow(id, matches, kills, top1, minutesPlayed, playlistId)
+        ({ id, matches, kills, wins, minutes, playlistId }) =>
+            createRow(id, matches, kills, wins, minutes, playlistId)
     );
 }
 
@@ -137,11 +137,17 @@ const useStyles = makeStyles(theme => ({
     }
 }));
 
+const stats = [
+    { key: 'matches', value: 'Played' },
+    { key: 'kills', value: 'Kills' },
+    { key: 'wins', value: 'Wins' },
+    { key: 'win_percentage', value: 'Win%' },
+    { key: 'kd', value: 'K/d' }
+];
+
 const UserCard = ({ user, onRefresh }) => {
     const classes = useStyles();
-    const generalStats = user.lifeTimeStats.filter(stat =>
-        GENERAL_STATS.includes(stat.key)
-    );
+    const generalStats = user.stats.all;
     const [gameView, setGameView] = useState('public');
     const recentMatchesTables = createTables(user.recentMatches, gameView);
 
@@ -194,12 +200,12 @@ const UserCard = ({ user, onRefresh }) => {
                             General stats
                         </Typography>
                         <List className={classes.stats}>
-                            {generalStats.map(({ key, value }, index) => (
+                            {stats.map((stat, index) => (
                                 <ListItem
                                     className={classes.statsItem}
                                     key={`${user.epicUserHandle}-${index}`}
                                 >
-                                    <ListItemText primary={key} secondary={value} />
+                                    <ListItemText primary={stat.value} secondary={generalStats[stat.key]} />
                                 </ListItem>
                             ))}
                         </List>
@@ -264,23 +270,13 @@ UserCard.propTypes = {
     recentMatches: PropTypes.arrayOf(
         PropTypes.shape({
             id: PropTypes.number,
-            accountId: PropTypes.string,
             playlist: PropTypes.string,
             kills: PropTypes.number,
-            minutesPlayed: PropTypes.number,
-            top1: PropTypes.number,
-            top5: PropTypes.number,
-            top6: PropTypes.number,
-            top10: PropTypes.number,
-            top12: PropTypes.number,
-            top25: PropTypes.number,
+            minutes: PropTypes.number,
+            wins: PropTypes.number,
             matches: PropTypes.number,
-            top3: PropTypes.number1,
             dateCollected: PropTypes.string,
-            score: PropTypes.number,
-            platform: PropTypes.number,
-            playlistId: PropTypes.number,
-            playersOutlived: PropTypes.number
+            playlistId: PropTypes.number
         })
     )
 };

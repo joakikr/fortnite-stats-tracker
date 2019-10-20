@@ -1,4 +1,5 @@
 export const GENERAL_STATS = ['Matches Played', 'Wins', 'Win%', 'Kills', 'K/d'];
+export const CURRENT_SEASON_IDS = ['curr_p2', 'curr_p10', 'curr_p9']; 
 
 export const PLAYLIST = {
     29: 'PG',

@@ -1,8 +1,8 @@
 import { KD_VALID_IDS_PUBLIC, KD_VALID_IDS_AREBA, KD_VALID_IDS_LTM, KD_VALID_IDS_ALL } from './consts';
 
 export const sortByDesc = (a, b, orderBy) => {
-    let aValue = a[orderBy].split('%')[0];
-    let bValue = b[orderBy].split('%')[0];
+    let aValue = a[orderBy];
+    let bValue = b[orderBy];
 
     if (!isNaN(aValue)) {
         aValue = parseFloat(aValue);

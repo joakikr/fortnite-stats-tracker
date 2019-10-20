@@ -6,8 +6,8 @@ export const getErrorMessage = (state) => state.error || null;
 export const getActiveProfile = (state) => state.active || '';
 export const getSearchValue = (state) => state.search || '';
 export const getProfilesToCompare = (state) => state.compare || [];
-export const getCompareRows = (state) => {
-    const createRow = (username, matches, wins, win_percentage, kills, kd) => ({
+export const getCompareRows = (state, view) => {
+    const createRow = ({ username, matches, wins, win_percentage, kills, kd }) => ({
         username,
         matches,
         wins,
@@ -22,11 +22,8 @@ export const getCompareRows = (state) => {
     compare.forEach(username => {
         const profile = getProfiles(state)[username];
         if (profile) {
-            const generalStats = profile.lifeTimeStats.filter(stat =>
-                GENERAL_STATS.includes(stat.key)
-            );
             rows.push(
-                createRow(profile.epicUserHandle, ...generalStats.map(stat => stat.value))
+                createRow({ username: profile.epicUserHandle, ...profile.stats[view || 'all'] })
             );
         }
     })

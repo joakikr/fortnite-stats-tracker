@@ -1,5 +1,6 @@
 import ls from 'local-storage';
 import * as AT from './actionTypes';
+import { transformProfile } from './reducer.util';
 
 const pending = (actionType) => `${actionType}_PENDING`;
 const fulfilled = (actionType) => `${actionType}_FULFILLED`;
@@ -27,7 +28,8 @@ function updateCompare(compare, profile) {
 
 function updateProfiles(profiles, profile, target) {
     delete profiles[target];
-    profiles[profile.epicUserHandle] = profile;
+    const transformed = transformProfile(profile);
+    profiles[profile.epicUserHandle] = transformed;
 
     // Update LocalStorage 
     ls('fst-profiles', JSON.stringify(profiles));
