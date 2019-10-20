@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Container from '@material-ui/core/Container';
@@ -14,6 +14,7 @@ import SearchAppBar from '../SearcAppBar/SearchAppBar';
 import RecentSearch from '../RecentSearch/RecentSearch';
 import CompareTable from '../Tables/CompareTable';
 import DarkModeButton from '../DarkModeButton/DarkModeButton';
+import CompareViewButtonGroup from '../CompareViewButtonGroup/CompareViewButtonGroup';
 
 // Redux
 import {
@@ -46,15 +47,23 @@ const useStyles = makeStyles(theme => ({
     loading: {
         marginTop: -theme.spacing(2),
         marginBottom: theme.spacing(2) 
-    }
+    },
+    compareTableMeta: {
+        display: 'flex',
+        justifyContent: 'space-between',
+        marginBottom: theme.spacing(1)
+    },
 }));
 
 const App = () => {
     const classes = useStyles();
+    const [compareView, setCompareView] = useState('all');
+
+    // Redux
     const dispatch = useDispatch();
     const profiles = useSelector(getProfiles);
     const profileUsernames = useSelector(getProfileUsernames);
-    const profileCompareRows = useSelector(getCompareRows);
+    const profileCompareRows = useSelector((state) => getCompareRows(state, compareView));
     const profilesToCompare = useSelector(getProfilesToCompare);
     const activeProfile = useSelector(getActiveProfile);
     const searchValue = useSelector(getSearchValue);
@@ -63,6 +72,10 @@ const App = () => {
     const loading = useSelector(isLoading);    
     const darkMode = useSelector(isDarkMode);
     let theme = darkMode ? darkModeTheme : defaultTheme;
+
+    function handleSetCompareView(_event, newView) {
+        setCompareView(newView);
+    };
 
     return (
         <MuiThemeProvider theme={theme}>
@@ -96,10 +109,13 @@ const App = () => {
                 )}
                 {profileCompareRows.length > 0 && (
                     <Fragment>
-                        <Typography>
-                            Comparing {profileCompareRows.length} players
-                        </Typography>
-                        <CompareTable rows={profileCompareRows} />
+                        <div className={classes.compareTableMeta}>
+                            <Typography>
+                                Comparing {profileCompareRows.length} players
+                            </Typography>
+                            <CompareViewButtonGroup view={compareView} handleCompareViewChange={handleSetCompareView} />
+                        </div>
+                        <CompareTable rows={profileCompareRows} view={compareView} />
                     </Fragment>
                 )}
             </Container>
