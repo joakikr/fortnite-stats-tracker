@@ -29,6 +29,7 @@
     "react": "^16.10.2",
     "react-dom": "^16.10.2",
     "react-redux": "^7.1.0",
+    "react-swipeable": "^5.4.0",
     "redux": "^4.0.4",
     "redux-promise-middleware": "^6.1.1",
     "redux-thunk": "^2.3.0"
