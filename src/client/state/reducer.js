@@ -29,12 +29,17 @@ function updateCompare(compare, profile) {
 function updateProfiles(profiles, profile, target) {
     delete profiles[target];
     const transformed = transformProfile(profile);
-    profiles[profile.epicUserHandle] = transformed;
+
+    // Add updated profile first
+    const updated = {
+        [profile.epicUserHandle]: transformed,
+        ...profiles
+    }
 
     // Update LocalStorage 
-    ls('fst-profiles', JSON.stringify(profiles));
+    ls('fst-profiles', JSON.stringify(updated));
 
-    return profiles;
+    return updated;
 }
 
 function updateDarkMode(isDarkMode) {
