@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useSwipeable } from 'react-swipeable'
 import PropTypes from 'prop-types';
 import moment from 'moment';
 import momentDuration from 'moment-duration-format';
@@ -8,7 +9,6 @@ import Card from '@material-ui/core/Card';
 import CardHeader from '@material-ui/core/CardHeader';
 import CardContent from '@material-ui/core/CardContent';
 import CardActions from '@material-ui/core/CardActions';
-import Collapse from '@material-ui/core/Collapse';
 import Container from '@material-ui/core/Container';
 import Avatar from '@material-ui/core/Avatar';
 import IconButton from '@material-ui/core/IconButton';
@@ -21,7 +21,6 @@ import RefreshIcon from '@material-ui/icons/Refresh';
 import GameViewButtonGroup from '../GameViewButtonGroup/GameViewButtonGroup';
 import RecentMatchesTables from '../Tables/RecentMatchesTables';
 import { 
-    GENERAL_STATS, 
     PLAYLIST, 
     COUNTDOWN_TIMER, 
     COUNTDOWN_TIMER_FORMATTED
@@ -145,9 +144,10 @@ const stats = [
     { key: 'kd', value: 'K/d' }
 ];
 
-const UserCard = ({ user, onRefresh }) => {
+const UserCard = ({ user, onRefresh, handleSwipeLeft, handleSwipeRight }) => {
     const classes = useStyles();
     const generalStats = user.stats.all;
+    const swipeHandlers = useSwipeable({ onSwipedLeft: handleSwipeLeft, onSwipedRight: handleSwipeRight })
     const [gameView, setGameView] = useState('public');
     const recentMatchesTables = createTables(user.recentMatches, gameView);
 
@@ -175,7 +175,7 @@ const UserCard = ({ user, onRefresh }) => {
     }, [user])
 
     return (
-        <Container maxWidth="md" className={classes.container}>
+        <Container maxWidth="md" className={classes.container} {...swipeHandlers}>
             <Card className={classes.card} square>
                 <CardHeader
                     avatar={<Avatar className={classes.avatar}>F</Avatar>}

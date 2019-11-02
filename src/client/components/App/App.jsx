@@ -37,6 +37,7 @@ import {
     isDarkMode,
     isLoading
 } from '../../state/selectors';
+import { SWIPE } from '../../consts';
 
 const useStyles = makeStyles(theme => ({
     compare: {
@@ -76,6 +77,18 @@ const App = () => {
     function handleSetCompareView(_event, newView) {
         setCompareView(newView);
     };
+
+    function handleSetActiveProfile({ dir, absX, velocity }) {
+        if (absX > SWIPE.TRESHOLD_DISTANCE && velocity > SWIPE.TRESHOLD_VELOCITY) {
+            const offset = dir === SWIPE.LEFT ? -1 : 1;
+            const currentIndex = profileUsernames.indexOf(activeProfile);
+            const newIndex = (currentIndex + offset + profileUsernames.length) % profileUsernames.length;
+            const newUsername = profileUsernames.find((_, index) => index === newIndex);
+            if (newUsername) {
+                dispatch(setProfile(newUsername));
+            }
+        }
+    }
 
     return (
         <MuiThemeProvider theme={theme}>
@@ -120,7 +133,12 @@ const App = () => {
                 )}
             </Container>
             {user && (
-                <UserCard user={user} onRefresh={(username) => dispatch(fetchProfile(username))} />
+                <UserCard 
+                    user={user} 
+                    onRefresh={(username) => dispatch(fetchProfile(username))}
+                    handleSwipeLeft={handleSetActiveProfile}
+                    handleSwipeRight={handleSetActiveProfile}
+                />
             )}
             <DarkModeButton 
                 isDarkMode={darkMode}

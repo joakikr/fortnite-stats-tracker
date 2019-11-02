@@ -1,5 +1,3 @@
-import { GENERAL_STATS } from '../consts';
-
 export const getProfiles = (state) => state.profiles || {};
 export const getProfileUsernames = (state) => Object.values(getProfiles(state)).map((profile) => profile.epicUserHandle);
 export const getErrorMessage = (state) => state.error || null;

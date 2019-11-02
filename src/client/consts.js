@@ -21,3 +21,10 @@ export const KD_VALID_IDS_ALL = [...KD_VALID_IDS_PUBLIC, ...KD_VALID_IDS_AREBA];
 
 export const COUNTDOWN_TIMER = 150; // 2min 30sec
 export const COUNTDOWN_TIMER_FORMATTED = '2m 30s';
+
+export const SWIPE = {
+    LEFT: 'Left',
+    RIGHT: 'Right',
+    TRESHOLD_DISTANCE: 50,
+    TRESHOLD_VELOCITY: 0.4
+}
