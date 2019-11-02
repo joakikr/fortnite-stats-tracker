@@ -3,7 +3,6 @@ import { makeStyles } from '@material-ui/core/styles';
 import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
 import RecentMatchesTable from '../Tables/RecentMatchesTable';
-import { KD_VALID_IDS_PUBLIC } from '../../consts';
 
 const useStyles = makeStyles(theme => ({
     scroll: {
@@ -43,9 +42,7 @@ const getKdForRowGroup = (rows, validIds) => {
     let kd = 0;
     if (accumulatedValidRows[0] !== 0) {
         // If they won, we assume they survided and substract one from number of matches
-        kd =
-            accumulatedValidRows[1] /
-            Math.max(accumulatedValidRows[0] - accumulatedValidRows[2], 1);
+        kd = accumulatedValidRows[1] / Math.max(accumulatedValidRows[0] - accumulatedValidRows[2], 1);
     }
 
     return kd.toFixed(2);
