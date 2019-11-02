@@ -47,19 +47,21 @@ export const clearRecentlySearched = () => ({
 });
 
 export const fetchProfile = (username) => dispatch => {
-    const promise = axios(`/api/profile/${username}`);
+    if (!username) {
+        return;
+    }
 
     return dispatch({
         type: AT.FST_FETCH_PROFILE,
-        payload: promise,
+        payload: axios(`/api/profile/${username}`),
         meta: {
             username
         }
     })
-        .catch((err) => {
-            const errorMessage = errorHandler(err.response.status);
-            dispatch(setError(errorMessage));
-        });
+    .catch((err) => {
+        const errorMessage = errorHandler(err.response.status);
+        dispatch(setError(errorMessage));
+    });
 }
 
 export const toggleDarkMode = (isDarkMode) => ({

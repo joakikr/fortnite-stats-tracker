@@ -3,6 +3,7 @@ import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import InputBase from '@material-ui/core/InputBase';
+import IconButton from '@material-ui/core/IconButton';
 import Container from '@material-ui/core/Container';
 import Box from '@material-ui/core/Box';
 import { fade, makeStyles } from '@material-ui/core/styles';
@@ -24,11 +25,12 @@ const useStyles = makeStyles(theme => ({
         }
     },
     search: {
-        position: 'relative',
+        display: 'flex',
+        alignItems: 'center',
         borderRadius: theme.shape.borderRadius,
-        backgroundColor: fade(theme.palette.common.white, 0.15),
+        backgroundColor: fade(theme.palette.common.white, 0.25),
         '&:hover': {
-            backgroundColor: fade(theme.palette.common.white, 0.25)
+            backgroundColor: fade(theme.palette.common.white, 0.35)
         },
         marginLeft: 0,
         width: '100%',
@@ -39,23 +41,23 @@ const useStyles = makeStyles(theme => ({
     },
     searchIcon: {
         width: theme.spacing(7),
-        height: '100%',
-        position: 'absolute',
-        pointerEvents: 'none',
+        padding: theme.spacing(1),
         display: 'flex',
         alignItems: 'center',
-        justifyContent: 'center'
+        justifyContent: 'center',
+        borderRadius: 0,
+        color: theme.palette.common.black
     },
     inputRoot: {
         width: '100%',
         color: 'inherit'
     },
     inputInput: {
-        padding: theme.spacing(1, 1, 1, 7),
+        padding: theme.spacing(1, 1, 1, 5),
         transition: theme.transitions.create('width'),
         width: '100%',
         [theme.breakpoints.up('sm')]: {
-            width: 120,
+            width: 140,
             '&:focus': {
                 width: 200
             }
@@ -83,9 +85,13 @@ const SearchAppBar = ({ value, onChange, onEnter }) => {
                             Fortnite Stats Tracker
                         </Typography>
                         <Box className={classes.search}>
-                            <Box className={classes.searchIcon}>
+                            <IconButton
+                                className={classes.searchIcon}
+                                onClick={onEnter}
+                                aria-label="search"
+                            >
                                 <SearchIcon />
-                            </Box>
+                            </IconButton>
                             <InputBase
                                 value={value}
                                 type="search"
