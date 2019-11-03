@@ -27,8 +27,8 @@ import {
     toggleDarkMode
 } from '../../state/actions';
 import {
-    getProfiles,
     getProfileUsernames,
+    getProfileByUsername,
     getErrorMessage,
     getActiveProfile,
     getSearchValue,
@@ -62,14 +62,13 @@ const App = () => {
 
     // Redux
     const dispatch = useDispatch();
-    const profiles = useSelector(getProfiles);
     const profileUsernames = useSelector(getProfileUsernames);
     const profileCompareRows = useSelector((state) => getCompareRows(state, compareView));
     const profilesToCompare = useSelector(getProfilesToCompare);
     const activeProfile = useSelector(getActiveProfile);
     const searchValue = useSelector(getSearchValue);
     const error = useSelector(getErrorMessage);
-    const user = profiles[activeProfile];
+    const user = useSelector((state) => getProfileByUsername(state, activeProfile))
     const loading = useSelector(isLoading);    
     const darkMode = useSelector(isDarkMode);
     let theme = darkMode ? darkModeTheme : defaultTheme;
@@ -105,9 +104,7 @@ const App = () => {
                 <RecentSearch
                     compare={profilesToCompare}
                     usernames={profileUsernames}
-                    toggleToCompare={username =>
-                        dispatch(toggleToCompare(username))
-                    }
+                    toggleToCompare={username => dispatch(toggleToCompare(username))}
                     clearCompares={() => dispatch(clearCompares())}
                     clearRecentlySearched={() => dispatch(clearRecentlySearched())}
                     setProfile={username => dispatch(setProfile(username))}

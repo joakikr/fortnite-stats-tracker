@@ -1,5 +1,6 @@
-export const getProfiles = (state) => state.profiles || {};
-export const getProfileUsernames = (state) => Object.values(getProfiles(state)).map((profile) => profile.epicUserHandle);
+export const getProfiles = (state) => state.profiles || [];
+export const getProfileUsernames = (state) => getProfiles(state).map((profile) => profile.epicUserHandle);
+export const getProfileByUsername = (state, username) => getProfiles(state).find((profile) => profile.epicUserHandle === username);
 export const getErrorMessage = (state) => state.error || null;
 export const getActiveProfile = (state) => state.active || '';
 export const getSearchValue = (state) => state.search || '';
@@ -18,7 +19,7 @@ export const getCompareRows = (state, view) => {
     const rows = [];
 
     compare.forEach(username => {
-        const profile = getProfiles(state)[username];
+        const profile = getProfileByUsername(state, username);
         if (profile) {
             rows.push(
                 createRow({ username: profile.epicUserHandle, ...profile.stats[view || 'all'] })

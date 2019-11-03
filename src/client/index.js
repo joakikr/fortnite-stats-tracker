@@ -7,13 +7,14 @@ import thunk from 'redux-thunk';
 import loading from './state/middleware';
 import ls from 'local-storage';
 
+import { LOCAL_STORAGE } from './consts';
 import App from './components/App/App'
 import reducer, { initialState } from './state/reducer';
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
 const state = initialState();
-const savedProfiles = ls('fst-profiles');
+const savedProfiles = ls(LOCAL_STORAGE.SAVED_PROFILES);
 const darkMode = ls('fst-dark-mode');
 
 if (savedProfiles) {

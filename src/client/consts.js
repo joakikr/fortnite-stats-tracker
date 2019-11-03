@@ -28,3 +28,7 @@ export const SWIPE = {
     TRESHOLD_DISTANCE: 50,
     TRESHOLD_VELOCITY: 0.4
 }
+
+export const LOCAL_STORAGE = {
+    SAVED_PROFILES: 'fst-profiles-v2'
+}

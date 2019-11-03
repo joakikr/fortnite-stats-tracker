@@ -1,13 +1,14 @@
 import ls from 'local-storage';
 import * as AT from './actionTypes';
 import { transformProfile } from './reducer.util';
+import { LOCAL_STORAGE } from '../consts';
 
 const pending = (actionType) => `${actionType}_PENDING`;
 const fulfilled = (actionType) => `${actionType}_FULFILLED`;
 const rejected = (actionType) => `${actionType}_REJECTED`;
 
 export const initialState = () => ({
-    profiles: {},
+    profiles: [],
     compare: [],
     search: '',
     active: '',
@@ -27,19 +28,19 @@ function updateCompare(compare, profile) {
 }
 
 function updateProfiles(profiles, profile, target) {
-    delete profiles[target];
     const transformed = transformProfile(profile);
+    const index = profiles.findIndex((item) => item.epicUserHandle === profile.epicUserHandle);
 
-    // Add updated profile first
-    const updated = {
-        [profile.epicUserHandle]: transformed,
-        ...profiles
+    if (index > -1) {
+        profiles[index] = transformed;
+    } else {
+        profiles.unshift(transformed);
     }
 
     // Update LocalStorage 
-    ls('fst-profiles', JSON.stringify(updated));
+    ls(LOCAL_STORAGE.SAVED_PROFILES, JSON.stringify(profiles));
 
-    return updated;
+    return profiles;
 }
 
 function updateDarkMode(isDarkMode) {
@@ -49,7 +50,7 @@ function updateDarkMode(isDarkMode) {
 
 function clearProfiles() {
     // Clear saved instances in LocalStorage 
-    ls.remove('fst-profiles');
+    ls.remove(LOCAL_STORAGE.SAVED_PROFILES);
     return initialState();
 }
 
