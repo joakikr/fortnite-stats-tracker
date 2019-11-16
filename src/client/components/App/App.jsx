@@ -74,7 +74,9 @@ const App = () => {
     let theme = darkMode ? darkModeTheme : defaultTheme;
 
     function handleSetCompareView(_event, newView) {
-        setCompareView(newView);
+        if (newView) {
+            setCompareView(newView);
+        }
     };
 
     function handleSetActiveProfile({ dir, absX, velocity }) {
