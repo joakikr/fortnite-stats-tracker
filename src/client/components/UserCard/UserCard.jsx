@@ -1,6 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { useSwipeable } from 'react-swipeable'
-import PropTypes from 'prop-types';
 import moment from 'moment';
 import momentDuration from 'moment-duration-format';
 import { makeStyles } from '@material-ui/core/styles';
@@ -144,15 +142,16 @@ const stats = [
     { key: 'kd', value: 'K/d' }
 ];
 
-const UserCard = ({ user, onRefresh, isActive }) => {
+const UserCard = ({ 
+    user, 
+    onRefresh, 
+    isActive, 
+    handleSetGameView, 
+    gameView
+}) => {
     const classes = useStyles();
     const generalStats = user.stats.all;
-    const [gameView, setGameView] = useState('public');
     const recentMatchesTables = createTables(user.recentMatches, gameView);
-
-    function handleSetGameView(_event, newView) {
-        setGameView(newView);
-    };
 
     let countdownTimer = null;
     const [timer, setTimer] = useState(COUNTDOWN_TIMER_FORMATTED);
@@ -248,41 +247,6 @@ const UserCard = ({ user, onRefresh, isActive }) => {
             </Card>
         </Container>
     );
-};
-
-UserCard.propTypes = {
-    accountId: PropTypes.string,
-    platformId: PropTypes.number,
-    platformName: PropTypes.string,
-    platformNameLong: PropTypes.string,
-    epicUserHandle: PropTypes.string,
-    stats: PropTypes.objectOf(
-        PropTypes.objectOf(
-            PropTypes.shape({
-                label: PropTypes.string,
-                field: PropTypes.string,
-                category: PropTypes.string,
-                valueInt: PropTypes.number,
-                value: PropTypes.string,
-                rank: PropTypes.number,
-                percentile: PropTypes.number,
-                displayValue: PropTypes.string
-            })
-        )
-    ),
-    lifeTimeStats: PropTypes.arrayOf(PropTypes.object),
-    recentMatches: PropTypes.arrayOf(
-        PropTypes.shape({
-            id: PropTypes.number,
-            playlist: PropTypes.string,
-            kills: PropTypes.number,
-            minutes: PropTypes.number,
-            wins: PropTypes.number,
-            matches: PropTypes.number,
-            dateCollected: PropTypes.string,
-            playlistId: PropTypes.number
-        })
-    )
 };
 
 export default UserCard;

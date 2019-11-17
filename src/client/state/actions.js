@@ -28,6 +28,11 @@ export const setProfile = (profile) => ({
     profile
 })
 
+export const deleteProfile = (profile) => ({
+    type: AT.FST_DELETE_PROFILE,
+    profile
+})
+
 export const setSearchValue = (value) => ({
     type: AT.FST_SET_SEARCH_VALUE,
     value
