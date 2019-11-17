@@ -144,9 +144,10 @@ const stats = [
     { key: 'kd', value: 'K/d' }
 ];
 
-const UserCard = ({ user, onRefresh, isActive }) => {
+const UserCard = ({ user, onRefresh, handleSwipeLeft, handleSwipeRight }) => {
     const classes = useStyles();
     const generalStats = user.stats.all;
+    const swipeHandlers = useSwipeable({ onSwipedLeft: handleSwipeLeft, onSwipedRight: handleSwipeRight })
     const [gameView, setGameView] = useState('public');
     const recentMatchesTables = createTables(user.recentMatches, gameView);
 
@@ -170,16 +171,11 @@ const UserCard = ({ user, onRefresh, isActive }) => {
                 countdownTimer = COUNTDOWN_TIMER;
             }
         }, 1000);
-
-        if (!isActive) {
-            clearInterval(interval);
-        }
-
         return () => clearInterval(interval)
-    }, [user, isActive])
+    }, [user])
 
     return (
-        <Container maxWidth="md" className={classes.container} >
+        <Container maxWidth="md" className={classes.container} {...swipeHandlers}>
             <Card className={classes.card} square>
                 <CardHeader
                     avatar={<Avatar className={classes.avatar}>F</Avatar>}

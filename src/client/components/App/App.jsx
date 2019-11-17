@@ -8,7 +8,7 @@ import { makeStyles, MuiThemeProvider } from '@material-ui/core/styles';
 import { defaultTheme, darkModeTheme } from './themes';
 
 // Components
-import UserCardList from '../UserCard/UserCardList';
+import UserCard from '../UserCard/UserCard';
 import Error from '../Error/Error';
 import SearchAppBar from '../SearcAppBar/SearchAppBar';
 import RecentSearch from '../RecentSearch/RecentSearch';
@@ -37,6 +37,7 @@ import {
     isDarkMode,
     isLoading
 } from '../../state/selectors';
+import { SWIPE } from '../../consts';
 
 const useStyles = makeStyles(theme => ({
     compare: {
@@ -70,13 +71,23 @@ const App = () => {
     const user = useSelector((state) => getProfileByUsername(state, activeProfile))
     const loading = useSelector(isLoading);    
     const darkMode = useSelector(isDarkMode);
-    const theme = darkMode ? darkModeTheme : defaultTheme;
+    let theme = darkMode ? darkModeTheme : defaultTheme;
 
     function handleSetCompareView(_event, newView) {
-        if (newView) {
-            setCompareView(newView);
-        }
+        setCompareView(newView);
     };
+
+    function handleSetActiveProfile({ dir, absX, velocity }) {
+        if (absX > SWIPE.TRESHOLD_DISTANCE && velocity > SWIPE.TRESHOLD_VELOCITY) {
+            const offset = dir === SWIPE.LEFT ? -1 : 1;
+            const currentIndex = profileUsernames.indexOf(activeProfile);
+            const newIndex = (currentIndex + offset + profileUsernames.length) % profileUsernames.length;
+            const newUsername = profileUsernames.find((_, index) => index === newIndex);
+            if (newUsername) {
+                dispatch(setProfile(newUsername));
+            }
+        }
+    }
 
     return (
         <MuiThemeProvider theme={theme}>
@@ -118,7 +129,14 @@ const App = () => {
                     </Fragment>
                 )}
             </Container>
-            <UserCardList />
+            {user && (
+                <UserCard 
+                    user={user} 
+                    onRefresh={(username) => dispatch(fetchProfile(username))}
+                    handleSwipeLeft={handleSetActiveProfile}
+                    handleSwipeRight={handleSetActiveProfile}
+                />
+            )}
             <DarkModeButton 
                 isDarkMode={darkMode}
                 toggleDarkMode={isDarkMode => dispatch(toggleDarkMode(isDarkMode))} 

@@ -25,7 +25,7 @@ export const COUNTDOWN_TIMER_FORMATTED = '2m 30s';
 export const SWIPE = {
     LEFT: 'Left',
     RIGHT: 'Right',
-    TRESHOLD_DISTANCE: 70,
+    TRESHOLD_DISTANCE: 50,
     TRESHOLD_VELOCITY: 0.4
 }
 
