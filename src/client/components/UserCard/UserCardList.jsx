@@ -6,7 +6,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Box from '@material-ui/core/Box'
 
 import UserCard from './UserCard';
-import { fetchProfile, setProfile } from '../../state/actions';
+import { fetchProfile, setProfile, deleteProfile } from '../../state/actions';
 import { getProfiles, getProfileUsernames, getActiveProfile, getProfileByUsername } from '../../state/selectors';
 import { useWindowSize } from '../../hooks';
 
@@ -125,6 +125,7 @@ const UserCardList = () => {
                 <UserCard 
                     user={users[i]} 
                     onRefresh={(username) => dispatch(fetchProfile(username))}
+                    onDelete={(username) => dispatch(deleteProfile(username))}
                     isActive={activeProfile === users[i].epicUserHandle}
                     handleSetGameView={handleSetGameView}
                     gameView={gameView}
@@ -143,6 +144,7 @@ const UserCardList = () => {
                     <UserCard 
                         user={user} 
                         onRefresh={(username) => dispatch(fetchProfile(username))}
+                        onDelete={(username) => dispatch(deleteProfile(username))}
                         isActive={true}
                         handleSetGameView={handleSetGameView}
                         gameView={gameView}

@@ -86,9 +86,11 @@ const reducer = (state = initialState(), action) => {
                 error: null
             };        
         case AT.FST_DELETE_PROFILE:
+            const transformed = deleteProfile(state.profiles, action.profile)
             return {
                 ...state,
-                profiles: deleteProfile(state.profiles, action.profile)
+                profiles: transformed,
+                active: transformed.length > 0 ? transformed[0].epicUserHandle : ''
             };
         case AT.FST_SET_SEARCH_VALUE:
             return {

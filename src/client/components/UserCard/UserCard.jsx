@@ -15,6 +15,7 @@ import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import RefreshIcon from '@material-ui/icons/Refresh';
+import ClearIcon from '@material-ui/icons/Clear';
 
 import GameViewButtonGroup from '../GameViewButtonGroup/GameViewButtonGroup';
 import RecentMatchesTables from '../Tables/RecentMatchesTables';
@@ -144,7 +145,8 @@ const stats = [
 
 const UserCard = ({ 
     user, 
-    onRefresh, 
+    onRefresh,
+    onDelete,
     isActive, 
     handleSetGameView, 
     gameView
@@ -183,12 +185,20 @@ const UserCard = ({
                 <CardHeader
                     avatar={<Avatar className={classes.avatar}>F</Avatar>}
                     action={
-                        <IconButton
-                            onClick={() => onRefresh(user.epicUserHandle)}
-                            aria-label="refresh"
-                        >
-                            <RefreshIcon />
-                        </IconButton>
+                        <>
+                            <IconButton
+                                onClick={() => onDelete(user.epicUserHandle)}
+                                aria-label="delete"
+                            >
+                                <ClearIcon />
+                            </IconButton>
+                            <IconButton
+                                onClick={() => onRefresh(user.epicUserHandle)}
+                                aria-label="refresh"
+                            >
+                                <RefreshIcon />
+                            </IconButton>
+                        </>
                     }
                     title={user.epicUserHandle}
                     subheader={user.platformNameLong}
