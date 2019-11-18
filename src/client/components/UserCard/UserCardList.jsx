@@ -56,18 +56,20 @@ const UserCardList = () => {
 
     function updateSprings (index) {
         set((i) => {
-            if (i < index.current - 1 || i > index.current + 1) {
-                return { display: 'none' };
-            }
+            // By rendring all elements the animation is smoother
+            // TODO: Find a way to only render prev - current - next, but with smooth animation
+            //if (i < index.current - 1 || i > index.current + 1) {
+            //    return { display: 'none' };
+            //}
             const sc = 1;
-            const x = (i - index.current) * size.width;
+            const x = (i - index) * size.width;
             return { x, sc, display: 'block' };
         });
     }
 
     // Update springs on window resize
     useEffect(() => {
-        updateSprings(index);
+        updateSprings(index.current);
     }, [size])
 
     // Update springs on user selecting different active profile
@@ -75,7 +77,7 @@ const UserCardList = () => {
         const activeIndex = users.findIndex((item) => item.epicUserHandle === activeProfile);
         if (activeIndex !== index.current) {
             index.current = activeIndex;
-            updateSprings(index);
+            updateSprings(index.current);
         }
     })
 
@@ -85,12 +87,12 @@ const UserCardList = () => {
             const yDis = Math.abs(yCurrent - yStart);
 
             if (down && xDis > SCALE_TRESHOLD * 3) {
-                /* Index calc with edges overlap
+                // Index calc with edges overlap
                 const offset = xDir > 0 ? 1 : -1;
-                let newIndex = (index.current + offset + users.length) % users.length;
-                */
+                const newIndex = (index.current + offset + users.length) % users.length;
 
-                const newIndex = Math.min(Math.max(index.current + (xDir > 0 ? 1 : -1), 0), users.length - 1);
+                // Index calc without edges overlap
+                // const newIndex = Math.min(Math.max(index.current + (xDir > 0 ? 1 : -1), 0), users.length - 1);
                 index.current = newIndex;
                 cancel(newIndex);
 
@@ -101,9 +103,11 @@ const UserCardList = () => {
             }
 
             set((i) => {
-                if (i < index.current - 1 || i > index.current + 1) {
-                    return { display: 'none' };
-                }
+                // By rendring all elements the animation is smoother
+                // TODO: Find a way to only render prev - current - next, but with smooth animation
+                //if (i < index.current - 1 || i > index.current + 1) {
+                //    return { display: 'none' };
+                //}
                 const sc = down && yDis < SCALE_TRESHOLD ? 1 - xDis / size.width : 1;
                 const x = ((i - index.current) * (size.width + 20) + (down ? xDelta : 0)) * sc;
                 return { x, sc, display: 'block' };
