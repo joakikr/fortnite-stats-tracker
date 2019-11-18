@@ -7,10 +7,10 @@ import RecentMatchesTable from '../Tables/RecentMatchesTable';
 const useStyles = makeStyles(theme => ({
     scroll: {
         overflowX: 'auto',
+        overflowY: 'scroll',
+        maxHeight: '300px',
         [theme.breakpoints.up('md')]: {
             minWidth: '550px',
-            maxHeight: '300px',
-            overflowY: 'scroll',
         }
     },
     scrollBox: {

@@ -27,7 +27,7 @@ function updateCompare(compare, profile) {
     return compare;
 }
 
-function updateProfiles(profiles, profile, target) {
+function updateProfiles(profiles, profile) {
     const transformed = transformProfile(profile);
     const index = profiles.findIndex((item) => item.epicUserHandle === profile.epicUserHandle);
 
@@ -41,6 +41,15 @@ function updateProfiles(profiles, profile, target) {
     ls(LOCAL_STORAGE.SAVED_PROFILES, JSON.stringify(profiles));
 
     return profiles;
+}
+
+function deleteProfile(profiles, profile) {
+    const transformed = profiles.filter((item) => item.epicUserHandle !== profile);
+
+    // Update LocalStorage 
+    ls(LOCAL_STORAGE.SAVED_PROFILES, JSON.stringify(transformed));
+
+    return transformed;
 }
 
 function updateDarkMode(isDarkMode) {
@@ -59,7 +68,7 @@ const reducer = (state = initialState(), action) => {
         case fulfilled(AT.FST_FETCH_PROFILE):
             return {
                 ...state,
-                profiles: updateProfiles(state.profiles, action.payload.data.profile, action.meta.username),
+                profiles: updateProfiles(state.profiles, action.payload.data.profile),
                 active: action.payload.data.profile.epicUserHandle,
                 search: '',
                 error: null
@@ -75,6 +84,13 @@ const reducer = (state = initialState(), action) => {
                 ...state,
                 active: action.profile,
                 error: null
+            };        
+        case AT.FST_DELETE_PROFILE:
+            const transformed = deleteProfile(state.profiles, action.profile)
+            return {
+                ...state,
+                profiles: transformed,
+                active: transformed.length > 0 ? transformed[0].epicUserHandle : ''
             };
         case AT.FST_SET_SEARCH_VALUE:
             return {

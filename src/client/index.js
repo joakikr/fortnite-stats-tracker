@@ -19,7 +19,8 @@ const darkMode = ls('fst-dark-mode');
 
 if (savedProfiles) {
     // Just assume its correct #YOLO
-    state.profiles = JSON.parse(savedProfiles)
+    state.profiles = JSON.parse(savedProfiles);
+    state.active = state.profiles[0].epicUserHandle;
 }
 
 if (darkMode) {

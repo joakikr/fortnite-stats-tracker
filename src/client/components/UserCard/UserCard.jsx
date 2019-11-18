@@ -1,6 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { useSwipeable } from 'react-swipeable'
-import PropTypes from 'prop-types';
 import moment from 'moment';
 import momentDuration from 'moment-duration-format';
 import { makeStyles } from '@material-ui/core/styles';
@@ -17,6 +15,7 @@ import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import RefreshIcon from '@material-ui/icons/Refresh';
+import ClearIcon from '@material-ui/icons/Clear';
 
 import GameViewButtonGroup from '../GameViewButtonGroup/GameViewButtonGroup';
 import RecentMatchesTables from '../Tables/RecentMatchesTables';
@@ -144,16 +143,17 @@ const stats = [
     { key: 'kd', value: 'K/d' }
 ];
 
-const UserCard = ({ user, onRefresh, handleSwipeLeft, handleSwipeRight }) => {
+const UserCard = ({ 
+    user, 
+    onRefresh,
+    onDelete,
+    isActive, 
+    handleSetGameView, 
+    gameView
+}) => {
     const classes = useStyles();
     const generalStats = user.stats.all;
-    const swipeHandlers = useSwipeable({ onSwipedLeft: handleSwipeLeft, onSwipedRight: handleSwipeRight })
-    const [gameView, setGameView] = useState('public');
     const recentMatchesTables = createTables(user.recentMatches, gameView);
-
-    function handleSetGameView(_event, newView) {
-        setGameView(newView);
-    };
 
     let countdownTimer = null;
     const [timer, setTimer] = useState(COUNTDOWN_TIMER_FORMATTED);
@@ -171,21 +171,34 @@ const UserCard = ({ user, onRefresh, handleSwipeLeft, handleSwipeRight }) => {
                 countdownTimer = COUNTDOWN_TIMER;
             }
         }, 1000);
+
+        if (!isActive) {
+            clearInterval(interval);
+        }
+
         return () => clearInterval(interval)
-    }, [user])
+    }, [user, isActive])
 
     return (
-        <Container maxWidth="md" className={classes.container} {...swipeHandlers}>
+        <Container maxWidth="md" className={classes.container} >
             <Card className={classes.card} square>
                 <CardHeader
                     avatar={<Avatar className={classes.avatar}>F</Avatar>}
                     action={
-                        <IconButton
-                            onClick={() => onRefresh(user.epicUserHandle)}
-                            aria-label="refresh"
-                        >
-                            <RefreshIcon />
-                        </IconButton>
+                        <>
+                            <IconButton
+                                onClick={() => onDelete(user.epicUserHandle)}
+                                aria-label="delete"
+                            >
+                                <ClearIcon />
+                            </IconButton>
+                            <IconButton
+                                onClick={() => onRefresh(user.epicUserHandle)}
+                                aria-label="refresh"
+                            >
+                                <RefreshIcon />
+                            </IconButton>
+                        </>
                     }
                     title={user.epicUserHandle}
                     subheader={user.platformNameLong}
@@ -244,41 +257,6 @@ const UserCard = ({ user, onRefresh, handleSwipeLeft, handleSwipeRight }) => {
             </Card>
         </Container>
     );
-};
-
-UserCard.propTypes = {
-    accountId: PropTypes.string,
-    platformId: PropTypes.number,
-    platformName: PropTypes.string,
-    platformNameLong: PropTypes.string,
-    epicUserHandle: PropTypes.string,
-    stats: PropTypes.objectOf(
-        PropTypes.objectOf(
-            PropTypes.shape({
-                label: PropTypes.string,
-                field: PropTypes.string,
-                category: PropTypes.string,
-                valueInt: PropTypes.number,
-                value: PropTypes.string,
-                rank: PropTypes.number,
-                percentile: PropTypes.number,
-                displayValue: PropTypes.string
-            })
-        )
-    ),
-    lifeTimeStats: PropTypes.arrayOf(PropTypes.object),
-    recentMatches: PropTypes.arrayOf(
-        PropTypes.shape({
-            id: PropTypes.number,
-            playlist: PropTypes.string,
-            kills: PropTypes.number,
-            minutes: PropTypes.number,
-            wins: PropTypes.number,
-            matches: PropTypes.number,
-            dateCollected: PropTypes.string,
-            playlistId: PropTypes.number
-        })
-    )
 };
 
 export default UserCard;
