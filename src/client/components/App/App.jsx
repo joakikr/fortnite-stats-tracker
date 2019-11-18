@@ -20,7 +20,6 @@ import CompareViewButtonGroup from '../CompareViewButtonGroup/CompareViewButtonG
 import {
     fetchProfile,
     setProfile,
-    deleteProfile,
     setSearchValue,
     toggleToCompare,
     clearCompares,
@@ -98,7 +97,6 @@ const App = () => {
                     clearCompares={() => dispatch(clearCompares())}
                     clearRecentlySearched={() => dispatch(clearRecentlySearched())}
                     setProfile={username => dispatch(setProfile(username))}
-                    deleteProfile={username => dispatch(deleteProfile(username))}
                 />
             )}
             <Container maxWidth="md" className={classes.compare}>

@@ -47,17 +47,6 @@ const useStyles = makeStyles(theme => ({
     },
     chip: {
         margin: theme.spacing(0.5)
-    },
-    desktopOnly: {
-        display: 'none',
-        [theme.breakpoints.up('md')]: {
-            display: 'block',
-        }
-    },
-    mobileOnly: {
-        [theme.breakpoints.up('md')]: {
-            display: 'none'
-        }
     }
 }));
 
@@ -65,7 +54,6 @@ const RecentSearch = ({
     usernames,
     compare,
     setProfile,
-    deleteProfile,
     toggleToCompare,
     clearCompares,
     clearRecentlySearched
@@ -102,7 +90,7 @@ const RecentSearch = ({
                         </Tooltip>
                     </Box>
                 </Box>
-                <Box className={`${classes.list} ${classes.desktopOnly}`}>
+                <Box className={classes.list}>
                     {usernames.map(username => {
                         let icon = <Add />;
                         let color = 'primary';
@@ -124,19 +112,6 @@ const RecentSearch = ({
                             />
                         );
                     })}
-                </Box>
-                <Box className={`${classes.list} ${classes.mobileOnly}`}>
-                    {usernames.map(username => (
-                        <Chip
-                            className={classes.chip}
-                            key={username}
-                            label={username}
-                            variant="outlined"
-                            color={compare.includes(username) ? 'secondary' : 'primary'}
-                            onDelete={() => deleteProfile(username)}
-                            onClick={() => toggleToCompare(username)}
-                        />
-                    ))}
                 </Box>
             </Container>
         </Paper>

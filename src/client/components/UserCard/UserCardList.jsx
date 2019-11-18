@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { useSprings, animated } from 'react-spring';
 import { useDrag } from 'react-use-gesture';
 import { useDispatch, useSelector } from 'react-redux';
@@ -8,6 +8,7 @@ import Box from '@material-ui/core/Box'
 import UserCard from './UserCard';
 import { fetchProfile, setProfile } from '../../state/actions';
 import { getProfiles, getProfileUsernames, getActiveProfile, getProfileByUsername } from '../../state/selectors';
+import { useWindowSize } from '../../hooks';
 
 import './UserCard.less'
 
@@ -45,12 +46,39 @@ const UserCardList = () => {
     const user = useSelector((state) => getProfileByUsername(state, activeProfile))
 
     // Animation (Only for mobile devices)
+    const size = useWindowSize();
     const index = useRef(0);
     const [springs, set] = useSprings(users.length, i => ({
-        x: i * window.innerWidth,
+        x: i * size.width,
         sc: 1,
         display: 'block'
     }));
+
+    function updateSprings (index) {
+        set((i) => {
+            if (i < index.current - 1 || i > index.current + 1) {
+                return { display: 'none' };
+            }
+            const sc = 1;
+            const x = (i - index.current) * size.width;
+            return { x, sc, display: 'block' };
+        });
+    }
+
+    // Update springs on window resize
+    useEffect(() => {
+        updateSprings(index);
+    }, [size])
+
+    // Update springs on user selecting different active profile
+    useEffect(() => {
+        const activeIndex = users.findIndex((item) => item.epicUserHandle === activeProfile);
+        if (activeIndex !== index.current) {
+            index.current = activeIndex;
+            updateSprings(index);
+        }
+    })
+
     const bind = useDrag(
         ({ down, delta: [xDelta], direction: [xDir], initial: [xStart, yStart], xy: [xCurrent, yCurrent], cancel }) => {
             const xDis = Math.abs(xCurrent - xStart);
@@ -76,8 +104,8 @@ const UserCardList = () => {
                 if (i < index.current - 1 || i > index.current + 1) {
                     return { display: 'none' };
                 }
-                const sc = down && yDis < SCALE_TRESHOLD ? 1 - xDis / window.innerWidth : 1;
-                const x = ((i - index.current) * (window.innerWidth + 20) + (down ? xDelta : 0)) * sc;
+                const sc = down && yDis < SCALE_TRESHOLD ? 1 - xDis / size.width : 1;
+                const x = ((i - index.current) * (size.width + 20) + (down ? xDelta : 0)) * sc;
                 return { x, sc, display: 'block' };
             });
         }
