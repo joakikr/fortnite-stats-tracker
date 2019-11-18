@@ -65,7 +65,7 @@ const RecentSearch = ({
                 <Box className={classes.header}>
                     <Typography variant="subtitle1" component="h2">
                         Recently searched players{' '}
-                        <Typography className={classes.desktopOnly} variant="subtitle2" component="span">
+                        <Typography variant="subtitle2" component="span">
                             (+&nbsp;to&nbsp;compare)
                         </Typography>
                     </Typography>
