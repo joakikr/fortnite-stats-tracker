@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from 'react';
+import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Container from '@material-ui/core/Container';
@@ -94,25 +94,25 @@ const App = () => {
                     setProfile={username => dispatch(setProfile(username))}
                 />
             )}
-            <Container maxWidth="md" className={classes.compare}>
+            <Container maxWidth="md">
                 {error && <Error message={error} />}
                 {!user && !error && profileCompareRows.length < 1 && (
                     <Typography>
                         Search by epic username to see stats.
                     </Typography>
                 )}
-                {profileCompareRows.length > 0 && (
-                    <Fragment>
-                        <div className={classes.compareTableMeta}>
-                            <Typography>
-                                Comparing {profileCompareRows.length} players
-                            </Typography>
-                            <CompareViewButtonGroup view={compareView} handleCompareViewChange={handleSetCompareView} />
-                        </div>
-                        <CompareTable rows={profileCompareRows} view={compareView} />
-                    </Fragment>
-                )}
             </Container>
+            {profileCompareRows.length > 0 && (
+                <Container maxWidth="md" className={classes.compare}>
+                    <div className={classes.compareTableMeta}>
+                        <Typography>
+                            Comparing {profileCompareRows.length} players
+                        </Typography>
+                        <CompareViewButtonGroup view={compareView} handleCompareViewChange={handleSetCompareView} />
+                    </div>
+                    <CompareTable rows={profileCompareRows} view={compareView} />
+                </Container>
+            )}
             <UserCardList />
         </MuiThemeProvider>
     );
