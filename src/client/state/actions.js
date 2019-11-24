@@ -51,14 +51,14 @@ export const clearRecentlySearched = () => ({
     type: AT.FST_CLEAR_RECENTLY_SEARCHED
 });
 
-export const fetchProfile = (username) => dispatch => {
-    if (!username) {
+export const fetchProfile = (username, platform) => dispatch => {
+    if (!username || !platform) {
         return;
     }
 
     return dispatch({
         type: AT.FST_FETCH_PROFILE,
-        payload: axios(`/api/profile/${username}`),
+        payload: axios(`/api/profile/${platform}/${username}`),
         meta: {
             username
         }
@@ -68,6 +68,11 @@ export const fetchProfile = (username) => dispatch => {
         dispatch(setError(errorMessage));
     });
 }
+
+export const setSelectedPlatform = (platform) => ({
+    type: AT.FST_SET_SELECTED_PLATFORM,
+    platform
+});
 
 export const toggleDarkMode = (isDarkMode) => ({
     type: AT.FST_TOGGLE_DARK_MODE,
