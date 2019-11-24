@@ -12,7 +12,7 @@ import { useWindowSize } from '../../hooks';
 
 import './UserCard.less'
 
-const SCALE_TRESHOLD = 50;
+const SCALE_TRESHOLD = 45;
 
 const useStyles = makeStyles(theme => ({
     desktopOnly: {
