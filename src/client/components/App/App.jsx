@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from 'react';
+import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Container from '@material-ui/core/Container';
@@ -22,7 +22,8 @@ import {
     setSearchValue,
     toggleToCompare,
     clearCompares,
-    clearRecentlySearched
+    clearRecentlySearched,
+    setSelectedPlatform
 } from '../../state/actions';
 import {
     getProfileUsernames,
@@ -32,7 +33,8 @@ import {
     getSearchValue,
     getProfilesToCompare,
     getCompareRows,
-    isLoading
+    isLoading,
+    getSelectedPlatform
 } from '../../state/selectors';
 
 const useStyles = makeStyles(theme => ({
@@ -66,6 +68,7 @@ const App = () => {
     const error = useSelector(getErrorMessage);
     const user = useSelector((state) => getProfileByUsername(state, activeProfile))
     const loading = useSelector(isLoading);    
+    const platform = useSelector(getSelectedPlatform);
 
     function handleSetCompareView(_event, newView) {
         if (newView) {
@@ -79,7 +82,9 @@ const App = () => {
             <SearchAppBar
                 value={searchValue}
                 onChange={username => dispatch(setSearchValue(username))}
-                onEnter={() => dispatch(fetchProfile(searchValue))}
+                onEnter={() => dispatch(fetchProfile(searchValue, platform))}
+                onSelectPlatform={(platform) => dispatch(setSelectedPlatform(platform))}
+                selectedPlatform={platform}
             />
             { loading && (
                 <LinearProgress className={classes.loading} />
@@ -94,25 +99,25 @@ const App = () => {
                     setProfile={username => dispatch(setProfile(username))}
                 />
             )}
-            <Container maxWidth="md" className={classes.compare}>
+            <Container maxWidth="md">
                 {error && <Error message={error} />}
                 {!user && !error && profileCompareRows.length < 1 && (
                     <Typography>
                         Search by epic username to see stats.
                     </Typography>
                 )}
-                {profileCompareRows.length > 0 && (
-                    <Fragment>
-                        <div className={classes.compareTableMeta}>
-                            <Typography>
-                                Comparing {profileCompareRows.length} players
-                            </Typography>
-                            <CompareViewButtonGroup view={compareView} handleCompareViewChange={handleSetCompareView} />
-                        </div>
-                        <CompareTable rows={profileCompareRows} view={compareView} />
-                    </Fragment>
-                )}
             </Container>
+            {profileCompareRows.length > 0 && (
+                <Container maxWidth="md" className={classes.compare}>
+                    <div className={classes.compareTableMeta}>
+                        <Typography>
+                            Comparing {profileCompareRows.length} players
+                        </Typography>
+                        <CompareViewButtonGroup view={compareView} handleCompareViewChange={handleSetCompareView} />
+                    </div>
+                    <CompareTable rows={profileCompareRows} view={compareView} />
+                </Container>
+            )}
             <UserCardList />
         </MuiThemeProvider>
     );

@@ -16,6 +16,10 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import RefreshIcon from '@material-ui/icons/Refresh';
 import ClearIcon from '@material-ui/icons/Clear';
+import PCIcon from '../Icon/PCIcon';
+import PSNIcon from '../Icon/PSNIcon';
+import XBoxIcon from '../Icon/XBoxIcon';
+import { PLATFORM } from '../../consts';
 
 import GameViewButtonGroup from '../GameViewButtonGroup/GameViewButtonGroup';
 import RecentMatchesTables from '../Tables/RecentMatchesTables';
@@ -25,6 +29,12 @@ import {
     COUNTDOWN_TIMER_FORMATTED
 } from '../../consts';
 import { gameViewToGameIds, gameViewFilter } from '../../utils';
+
+const iconMapper = {
+    [PLATFORM.PSN]: <PSNIcon />,
+    [PLATFORM.XBOX]: <XBoxIcon />,
+    [PLATFORM.PC]: <PCIcon />
+};
 
 function createRow(id, matches, kills, wins, minutes, playlistId) {
     return {
@@ -179,11 +189,17 @@ const UserCard = ({
         return () => clearInterval(interval)
     }, [user, isActive])
 
+    const platform = iconMapper[user.platformName] || 'F';
+
     return (
-        <Container maxWidth="md" className={classes.container} >
+        <Container maxWidth="md" className={classes.container}>
             <Card className={classes.card} square>
                 <CardHeader
-                    avatar={<Avatar className={classes.avatar}>F</Avatar>}
+                    avatar={
+                        <Avatar className={classes.avatar}>
+                            {platform}
+                        </Avatar>
+                    }
                     action={
                         <>
                             <IconButton
@@ -201,7 +217,6 @@ const UserCard = ({
                         </>
                     }
                     title={user.epicUserHandle}
-                    subheader={user.platformNameLong}
                 />
                 <CardContent className={classes.content}>
                     <Box className={classes.statsContainer}>
@@ -218,7 +233,10 @@ const UserCard = ({
                                     className={classes.statsItem}
                                     key={`${user.epicUserHandle}-${index}`}
                                 >
-                                    <ListItemText primary={stat.value} secondary={generalStats[stat.key]} />
+                                    <ListItemText
+                                        primary={stat.value}
+                                        secondary={generalStats[stat.key]}
+                                    />
                                 </ListItem>
                             ))}
                         </List>
@@ -232,26 +250,42 @@ const UserCard = ({
                             >
                                 Recent Matches
                             </Typography>
-                            <GameViewButtonGroup gameView={gameView} handleGameViewChange={handleSetGameView} />
+                            <GameViewButtonGroup
+                                gameView={gameView}
+                                handleGameViewChange={handleSetGameView}
+                            />
                         </div>
-                        <RecentMatchesTables tables={recentMatchesTables} ids={gameViewToGameIds(gameView)} />
+                        <RecentMatchesTables
+                            tables={recentMatchesTables}
+                            ids={gameViewToGameIds(gameView)}
+                        />
                     </Box>
-                    <CardActions className={`${classes.contentTableMeta} ${classes.mobileOnly}`} disableSpacing>
+                    <CardActions
+                        className={`${classes.contentTableMeta} ${classes.mobileOnly}`}
+                        disableSpacing
+                    >
                         <Typography variant="subtitle2" component="span">
                             Recent Matches
                         </Typography>
-                        <GameViewButtonGroup gameView={gameView} handleGameViewChange={handleSetGameView} />
+                        <GameViewButtonGroup
+                            gameView={gameView}
+                            handleGameViewChange={handleSetGameView}
+                        />
                     </CardActions>
                     <div className={classes.mobileOnly}>
-                        <RecentMatchesTables tables={recentMatchesTables} ids={gameViewToGameIds(gameView)} />
+                        <RecentMatchesTables
+                            tables={recentMatchesTables}
+                            ids={gameViewToGameIds(gameView)}
+                        />
                     </div>
                 </CardContent>
                 <Box className={classes.countdown}>
                     <Typography
                         variant="caption"
                         color="textSecondary"
-                        component="h2">
-                        Stats update in { timer }
+                        component="h2"
+                    >
+                        Stats update in {timer}
                     </Typography>
                 </Box>
             </Card>

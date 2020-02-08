@@ -29,6 +29,12 @@ export const SWIPE = {
     TRESHOLD_VELOCITY: 0.4
 }
 
+export const PLATFORM = {
+    PSN: 'psn',
+    XBOX: 'xbox',
+    PC: 'pc'
+};
+
 export const LOCAL_STORAGE = {
-    SAVED_PROFILES: 'fst-profiles-v2'
+    SAVED_PROFILES: 'fst-profiles-v3'
 }

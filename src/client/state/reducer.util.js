@@ -64,6 +64,7 @@ export function transformProfile(profile) {
     const stats = transformStats(profile.lifeTimeStats, profile.stats);
 
     return {
+        platformName: profile.platformName,
         platformNameLong: profile.platformNameLong,
         epicUserHandle: profile.epicUserHandle,
         recentMatches,

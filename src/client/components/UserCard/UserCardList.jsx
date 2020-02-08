@@ -124,7 +124,7 @@ const UserCardList = () => {
             <animated.div style={{ transform: sc.interpolate(s => `scale(${s})`) }} className="user-card-list__scaler">
                 <UserCard 
                     user={users[i]} 
-                    onRefresh={(username) => dispatch(fetchProfile(username))}
+                    onRefresh={(username) => dispatch(fetchProfile(username, users[i].platformName))}
                     onDelete={(username) => dispatch(deleteProfile(username))}
                     isActive={activeProfile === users[i].epicUserHandle}
                     handleSetGameView={handleSetGameView}
@@ -143,7 +143,7 @@ const UserCardList = () => {
                 {user && (
                     <UserCard 
                         user={user} 
-                        onRefresh={(username) => dispatch(fetchProfile(username))}
+                        onRefresh={(username) => dispatch(fetchProfile(username, user.platformName))}
                         onDelete={(username) => dispatch(deleteProfile(username))}
                         isActive={true}
                         handleSetGameView={handleSetGameView}
