@@ -22,9 +22,10 @@ const ftOptions = {
     }
 };
 
-app.get('/api/profile/:username', throttle(throttleOptions), function(req, res, next) {
+app.get('/api/profile/:platform/:username', throttle(throttleOptions), function(req, res, next) {
+    const platform = req.params.platform;
     const username = req.params.username;
-    const path = API.profile(username);
+    const path = API.profile(platform, username);
 
     axios.get(path, ftOptions)
         .then((response) => {

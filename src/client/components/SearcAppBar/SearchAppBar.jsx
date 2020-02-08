@@ -8,6 +8,7 @@ import Container from '@material-ui/core/Container';
 import Box from '@material-ui/core/Box';
 import { fade, makeStyles } from '@material-ui/core/styles';
 import SearchIcon from '@material-ui/icons/Search';
+import PlatformButton from '../PlatformButton/PlatformButton';
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -73,7 +74,13 @@ const onKeyDown = (e, onEnter) => {
     }
 };
 
-const SearchAppBar = ({ value, onChange, onEnter }) => {
+const SearchAppBar = ({
+    value,
+    onChange,
+    onEnter,
+    onSelectPlatform,
+    selectedPlatform
+}) => {
     const classes = useStyles();
 
     return (
@@ -81,9 +88,14 @@ const SearchAppBar = ({ value, onChange, onEnter }) => {
             <AppBar className={classes.bar} position="static">
                 <Container maxWidth="md">
                     <Toolbar disableGutters>
-                        <Typography className={classes.title} variant="h6" noWrap>
+                        <Typography
+                            className={classes.title}
+                            variant="h6"
+                            noWrap
+                        >
                             Fortnite Stats Tracker
                         </Typography>
+                        <PlatformButton onSelect={onSelectPlatform} selected={selectedPlatform} />
                         <Box className={classes.search}>
                             <IconButton
                                 className={classes.searchIcon}

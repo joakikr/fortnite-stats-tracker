@@ -22,7 +22,8 @@ import {
     setSearchValue,
     toggleToCompare,
     clearCompares,
-    clearRecentlySearched
+    clearRecentlySearched,
+    setSelectedPlatform
 } from '../../state/actions';
 import {
     getProfileUsernames,
@@ -32,7 +33,8 @@ import {
     getSearchValue,
     getProfilesToCompare,
     getCompareRows,
-    isLoading
+    isLoading,
+    getSelectedPlatform
 } from '../../state/selectors';
 
 const useStyles = makeStyles(theme => ({
@@ -66,6 +68,7 @@ const App = () => {
     const error = useSelector(getErrorMessage);
     const user = useSelector((state) => getProfileByUsername(state, activeProfile))
     const loading = useSelector(isLoading);    
+    const platform = useSelector(getSelectedPlatform);
 
     function handleSetCompareView(_event, newView) {
         if (newView) {
@@ -79,7 +82,9 @@ const App = () => {
             <SearchAppBar
                 value={searchValue}
                 onChange={username => dispatch(setSearchValue(username))}
-                onEnter={() => dispatch(fetchProfile(searchValue))}
+                onEnter={() => dispatch(fetchProfile(searchValue, platform))}
+                onSelectPlatform={(platform) => dispatch(setSelectedPlatform(platform))}
+                selectedPlatform={platform}
             />
             { loading && (
                 <LinearProgress className={classes.loading} />

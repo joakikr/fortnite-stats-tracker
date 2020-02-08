@@ -111,6 +111,11 @@ const reducer = (state = initialState(), action) => {
             return {
                 ...clearProfiles(),
                 isDarkMode: state.isDarkMode
+            };        
+        case AT.FST_SET_SELECTED_PLATFORM:
+            return {
+                ...state,
+                platform: action.platform
             };
         case AT.FST_LOADING_ADD:
                 return {
