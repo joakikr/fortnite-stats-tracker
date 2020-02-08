@@ -8,6 +8,7 @@ export const PLAYLIST = {
     33: 'Squad',
     97: 'Creative',
     107: 'A.Solo',
+    106: 'A.Duos',
     109: 'A.Trios',
     108: 'A.Squad',
     161: 'Rumble',
@@ -15,7 +16,7 @@ export const PLAYLIST = {
 }
 
 export const KD_VALID_IDS_PUBLIC = [31, 32, 33];
-export const KD_VALID_IDS_AREBA = [107, 108, 109];
+export const KD_VALID_IDS_AREBA = [106, 107, 108, 109];
 export const KD_VALID_IDS_LTM = [161, 259];
 export const KD_VALID_IDS_ALL = [...KD_VALID_IDS_PUBLIC, ...KD_VALID_IDS_AREBA];
 
