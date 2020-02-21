@@ -12,6 +12,8 @@ export const PLAYLIST = {
     109: 'A.Trios',
     108: 'A.Squad',
     161: 'Rumble',
+    253: 'Bot Duos',
+    252: 'Bot Squad',
     259: 'Storm King'
 }
 
